@@ -65,7 +65,6 @@ async function run() {
             },
         },
     });
-    console.log({ client, game, invoice, invoiceGames });
 }
 
 run()
