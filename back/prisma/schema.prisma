@@ -9,3 +9,65 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Client {
+  id        Int       @id @default(autoincrement())
+  clientId  String    @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  firstName String
+  lastName  String
+  createdAt DateTime  @default(now())
+  email     String    @unique
+  password  String?
+  isAdmin   Boolean   @default(false)
+  invoices  Invoice[]
+  address   String?
+  phone     String?
+}
+
+model Invoice {
+  id              Int             @id @default(autoincrement())
+  invoiceId       String          @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime        @default(now())
+  paidAt          DateTime?
+  isPaid          Boolean         @default(false)
+  finalPrice      Float
+  clientId        Int
+  client          Client          @relation(fields: [clientId], references: [id])
+  invoicesGames   invoicesGames[]
+  billingAddress  String?
+  shippingAddress String?
+}
+
+model Game {
+  id            Int             @id @default(autoincrement())
+  gameId        String          @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  stock         Int
+  img           String?
+  price         Float
+  description   String?
+  name          String
+  minPlayer     Int?
+  maxPlayer     Int?
+  duration      String?
+  type          GameType        @default(BoardGame)
+  invoicesGames invoicesGames[]
+}
+
+model invoicesGames {
+  id        Int     @id @default(autoincrement())
+  invoiceId Int
+  gameId    Int
+  invoice   Invoice @relation(fields: [invoiceId], references: [id])
+  game      Game    @relation(fields: [gameId], references: [id])
+}
+
+enum GameType {
+  BoardGame
+  CardGame
+  MiniatureGame
+  RolePlayingGame
+  CoopGame
+  StrategyGame
+  QuizGame
+  PartyGame
+}
