@@ -1,12 +1,11 @@
 import { Box, Container, Icon, Image, Text } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 import Logo from '../../assets/logo-square.svg';
-import 'react-material-symbols/dist/rounded.css';
 import LinkSidebar from '../pages/LinkSidebar';
 
 const SidebarDashboard = () => {
   return (
-    <Container display={'flex'} height={'100%'}>
+    <Box display={'flex'} height={'100%'}>
       <Box
         bg={'black'}
         width="200px"
@@ -44,7 +43,7 @@ const SidebarDashboard = () => {
       <Box bg={'white'} flex={1}>
         <Outlet></Outlet>
       </Box>
-    </Container>
+    </Box>
   );
 };
 

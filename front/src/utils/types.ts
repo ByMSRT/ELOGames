@@ -1,4 +1,3 @@
-
 export interface IProfile {
     id: string,
     firstName: string,
@@ -12,7 +11,7 @@ export interface IProfile {
 
 export interface IInvoice {
     id: string,
-    isPaid : boolean,
+    isPaid: boolean,
     finalPrice: Float32Array,
     paidAt: Date,
     billingAddress: string,
@@ -24,7 +23,7 @@ export interface IInvoice {
 
 export interface IClient {
     invoices: IInvoice[],
-    profile : IProfile,
+    profile: IProfile,
 }
 
 export interface IInvoiceGame {
@@ -43,3 +42,13 @@ export interface IGame {
     duration: string,
     description: string,
 }
+export type TabBuilderType = {
+    type: 'text' | 'number' | 'price' | 'edit' | 'redirect' | 'date' | 'image' | 'phone' | 'badge'
+}
+
+export interface TabBuilder {
+    name: string,
+    dbColumn: string,
+    type: TabBuilderType["type"],
+}
+

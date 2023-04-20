@@ -17,7 +17,7 @@ interface LinkSidebarProps {
 const LinkSidebar = ({ iconName, text, link }: LinkSidebarProps) => {
   const navigate = useNavigate();
   const router = useLocation();
-  console.log(router);
+
   const toggleClick = () => {
     navigate(`/admin/${link}`);
   };
