@@ -1,10 +1,10 @@
-import { CookiesProvider } from "react-cookie";
+import { CookiesProvider } from 'react-cookie';
 import { AppRouter } from './routes/AppRouter';
 
 function App() {
   return (
     <CookiesProvider>
-      <AppRouter/>
+      <AppRouter />
     </CookiesProvider>
   );
 }
