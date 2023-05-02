@@ -1,10 +1,9 @@
 import { Box, Button, Divider, FormControl, FormErrorMessage, FormHelperText, FormLabel, Heading, Image, Input, InputGroup, InputRightElement, Link, Text } from '@chakra-ui/react';
-import authent from '../assets/authent.svg'
-import register from '../assets/register.svg'
+import registerImg from '../assets/register.svg'
 import { useState } from 'react';
-import {MaterialSymbol} from 'react-material-symbols'
 import 'react-material-symbols/dist/rounded.css';
 import Navbar from '../components/shared/Navbar';
+import register from '../CRUD/login';
 
 
 const Register = () => {
@@ -104,6 +103,7 @@ const Register = () => {
                 mb='1rem'  
                 background='white'
                 borderRadius='9'
+                onClick={() => register("test", "test", "test", "test")}
               >
                 S'inscrire
               </Button>
@@ -120,7 +120,7 @@ const Register = () => {
           alignItems='center' 
           justifyContent='center'
         >
-          <Image src={register}/>
+          <Image src={registerImg}/>
         </Box>  
       </Box>
     </Box>
