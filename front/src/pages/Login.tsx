@@ -1,10 +1,56 @@
-import { Heading } from '@chakra-ui/react';
-import React from 'react';
+import { Box, Center, Heading, Image, Input } from '@chakra-ui/react';
+import authent from '../assets/authent.svg'
+
+
 const Login = () => {
   return (
-    <Heading color={'purple'} fontSize={'100'}>
-      Login
-    </Heading>
+    <Box 
+      w='100%' 
+      h='100%' 
+      bgGradient='linear(to-t, black 0%, black 50%, purple 50%, purple 100%)' 
+      display='flex'
+      flexDirection='column'
+      alignItems='center'
+      justifyContent='center' 
+    >
+      <Box
+        bg='yellow'
+        borderRadius='30px'
+        w='60rem'
+        h='35rem'
+        display='flex'
+        justifyContent='end'
+      >
+        <Box
+          w='30rem'
+          h='100%' 
+          display='flex' 
+          flexDirection='column' 
+          alignItems='center' 
+          justifyContent='center'
+        >
+          <Heading fontStyle='heading'>Se connecter</Heading>
+          <Input placeholder='Basic usage' />
+        </Box>
+        <Box
+          bg='whitePurple'
+          borderRadius='30px'
+          w='30rem'
+          h='100%' 
+          display='flex' 
+          flexDirection='column' 
+          alignItems='center' 
+          justifyContent='center'
+        >
+          <Image src={authent}/>
+        </Box>
+
+
+      </Box>
+
+     
+      
+    </Box>
   );
 };
 
