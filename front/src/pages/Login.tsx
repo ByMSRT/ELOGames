@@ -5,12 +5,24 @@ import { useState } from 'react';
 import {MaterialSymbol} from 'react-material-symbols'
 import 'react-material-symbols/dist/rounded.css';
 import Navbar from '../components/shared/Navbar';
+import { login } from '../CRUD/user';
+import { useNavigate } from "react-router-dom";
 
 
 const Login = () => {
 
   const [show, setShow] = useState(false)
   const handleClick = () => setShow(!show)
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const navigate = useNavigate()
+
+  const loginUser= async () => {
+    login(email, password)
+    navigate('/home')
+  }
 
   return (
     <Box
@@ -63,6 +75,8 @@ const Login = () => {
                   placeholder='Votre Email' 
                   background='white'
                   mb='2rem'
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
                 />
             </FormControl>
 
@@ -75,6 +89,8 @@ const Login = () => {
                   placeholder='Votre Mot de passe'
                   background='white'
                   mb='2rem'
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
                 />
                 <InputRightElement width='4.5rem'>
                   <Button background='white' h='1.75rem' size='sm' onClick={handleClick}>
@@ -95,6 +111,7 @@ const Login = () => {
                 h='2.5rem' 
                 mb='1rem'  
                 background='white'
+                onClick={loginUser}
               >
                 Se connecter
               </Button>
