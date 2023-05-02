@@ -12,8 +12,11 @@ const prisma = new PrismaClient();
 
 userRouter.post("/register", async (req, res) => {
     try {
+        
         const { email, password, firstName, lastName } = req.body;
-
+        
+        console.log(req.body);
+        
         const userExist = await prisma.client.findUnique({
             where: {
                 email: email,
@@ -35,6 +38,7 @@ userRouter.post("/register", async (req, res) => {
             },
         });
 
+        
         const token = jwt.sign(
             {
                 email: client.email,
