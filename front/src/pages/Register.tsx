@@ -1,15 +1,31 @@
-import { Box, Button, Divider, FormControl, FormErrorMessage, FormHelperText, FormLabel, Heading, Image, Input, InputGroup, InputRightElement, Link, Text } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Heading, Image, Input, InputGroup, InputRightElement, Link, Text } from '@chakra-ui/react';
 import registerImg from '../assets/register.svg'
 import { useState } from 'react';
 import 'react-material-symbols/dist/rounded.css';
 import Navbar from '../components/shared/Navbar';
-import register from '../CRUD/login';
+import { register }  from '../CRUD/user';
+import { useNavigate } from "react-router-dom";
+import { MaterialSymbol } from 'react-material-symbols';
 
 
 const Register = () => {
 
   const [show, setShow] = useState(false)
   const handleClick = () => setShow(!show)
+
+  const [lastName , setLastName] = useState('')
+  const [firstName , setFirstName] = useState('')
+  const [email , setEmail] = useState('')
+  const [password , setPassword] = useState('')
+
+  const navigate = useNavigate();
+
+  const registerUser = async () => {
+    register(email, password, firstName, lastName),
+    navigate('/login')
+  }
+
+  
 
   return (
     <Box
@@ -56,37 +72,53 @@ const Register = () => {
 
             <Text>Vous avez déjà un compte ? <Link color='yellow' href='/login'>Connectez-vous !</Link> </Text>
 
-            <FormControl variant="floating" id="first-name" mt='1rem' isRequired >
+            <FormControl variant="floating" mt='1rem' isRequired >
               <FormLabel>Nom</FormLabel>
               <Input 
                   placeholder='Votre Nom' 
                   background='white'
                   mb='0.5rem'
+                  onChange={(e) => setLastName(e.target.value)}
+                  value={lastName}
                 />
             </FormControl>
-            <FormControl variant="floating" id="first-name"  isRequired >
+            <FormControl variant="floating"  isRequired >
               <FormLabel>Prénom</FormLabel>
               <Input 
                   placeholder='Votre Prénom' 
                   background='white'
                   mb='0.5rem'
+                  onChange={(e) => setFirstName(e.target.value)}
+                  value={firstName}
                 />
             </FormControl>
-            <FormControl variant="floating" id="first-name"  isRequired >
+            <FormControl variant="floating"  isRequired >
               <FormLabel>Email</FormLabel>
               <Input 
                   placeholder='Votre Email' 
                   background='white'
                   mb='0.5rem'
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
                 />
             </FormControl>
-            <FormControl variant="floating" id="first-name"  isRequired >
+            <FormControl variant="floating"  isRequired >
               <FormLabel>Mot de passe</FormLabel>
-              <Input 
-                  placeholder='Votre Mot de Passe' 
-                  background='white'
-                  mb='0.5rem'
-                />
+              <InputGroup size="md">
+                <Input 
+                    placeholder='Votre Mot de Passe' 
+                    type={show ? 'text' : 'password'}
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                    background='white'
+                    mb='0.5rem'
+                  />
+                  <InputRightElement width='4.5rem'>
+                    <Button background='white' h='1.75rem' size='sm' onClick={handleClick}>
+                      {show ? <MaterialSymbol icon="visibility" ></MaterialSymbol> : <MaterialSymbol icon="visibility_off" ></MaterialSymbol>}
+                    </Button>
+                  </InputRightElement>
+              </InputGroup>
             </FormControl>
           
           <Box
@@ -103,7 +135,7 @@ const Register = () => {
                 mb='1rem'  
                 background='white'
                 borderRadius='9'
-                onClick={() => register("test", "test", "test", "test")}
+                onClick={() => registerUser()}
               >
                 S'inscrire
               </Button>
