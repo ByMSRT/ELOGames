@@ -1,13 +1,13 @@
 import { Box, Button, Divider, FormControl, FormErrorMessage, FormHelperText, FormLabel, Heading, Image, Input, InputGroup, InputRightElement, Link, Text } from '@chakra-ui/react';
 import authent from '../assets/authent.svg'
-import googleImage from '../assets/google.svg'
+import register from '../assets/register.svg'
 import { useState } from 'react';
 import {MaterialSymbol} from 'react-material-symbols'
 import 'react-material-symbols/dist/rounded.css';
 import Navbar from '../components/shared/Navbar';
 
 
-const Login = () => {
+const Register = () => {
 
   const [show, setShow] = useState(false)
   const handleClick = () => setShow(!show)
@@ -23,14 +23,14 @@ const Login = () => {
     <Box 
       w='100%' 
       h='100%'
-      bgGradient='linear(to-t, black 0%, black 50%, purple 50%, purple 100%)' 
+      bgGradient='linear(to-t, black 0%, black 50%, yellow 50%, yellow 100%)' 
       display='flex'
       flexDirection='column'
       alignItems='center'
       justifyContent='center' 
     >
       <Box
-        bg='yellow'
+        bg='purple'
         borderRadius='30px'
         w='60rem'
         h='35rem'
@@ -52,74 +52,62 @@ const Login = () => {
               fontStyle='heading'
               mb='1rem'
             >
-              Se connecter
+              S'inscrire
             </Heading>
 
-            <Text>Vous n’avez pas de compte ? <Link color='purple' href='/register'>Créez en un !</Link> </Text>
+            <Text>Vous avez déjà un compte ? <Link color='yellow' href='/login'>Connectez-vous !</Link> </Text>
 
             <FormControl variant="floating" id="first-name" mt='1rem' isRequired >
+              <FormLabel>Nom</FormLabel>
+              <Input 
+                  placeholder='Votre Nom' 
+                  background='white'
+                  mb='0.5rem'
+                />
+            </FormControl>
+            <FormControl variant="floating" id="first-name"  isRequired >
+              <FormLabel>Prénom</FormLabel>
+              <Input 
+                  placeholder='Votre Prénom' 
+                  background='white'
+                  mb='0.5rem'
+                />
+            </FormControl>
+            <FormControl variant="floating" id="first-name"  isRequired >
               <FormLabel>Email</FormLabel>
               <Input 
                   placeholder='Votre Email' 
                   background='white'
-                  mb='2rem'
+                  mb='0.5rem'
                 />
             </FormControl>
-
-            <FormControl variant="floating" id="first-name" isRequired >
+            <FormControl variant="floating" id="first-name"  isRequired >
               <FormLabel>Mot de passe</FormLabel>
-              <InputGroup size='md'>
-                <Input
-                  pr='4.5rem'
-                  type={show ? 'text' : 'password'}
-                  placeholder='Votre Mot de passe'
+              <Input 
+                  placeholder='Votre Mot de Passe' 
                   background='white'
-                  mb='2rem'
+                  mb='0.5rem'
                 />
-                <InputRightElement width='4.5rem'>
-                  <Button background='white' h='1.75rem' size='sm' onClick={handleClick}>
-                    {show ? <MaterialSymbol icon="visibility" ></MaterialSymbol> : <MaterialSymbol icon="visibility_off" ></MaterialSymbol>}
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
             </FormControl>
-
-            <Box
-              display='flex'
-              flexDirection='column'
-              alignItems='center'
-            >
-              <Button 
+          
+          <Box
+            display='flex'
+            justifyContent='center'
+            alignItems='center'
+            flexDirection='column' 
+            mt='1rem'
+          >
+            <Button 
                 fontWeight="light" 
                 w='15rem' 
                 h='2.5rem' 
                 mb='1rem'  
                 background='white'
+                borderRadius='9'
               >
-                Se connecter
+                S'inscrire
               </Button>
-
-              <Divider 
-                background='black'
-                h="1px"  
-              ></Divider>
-              <Text 
-                mb="1rem"
-                mt="1rem"
-              >
-                OU
-              </Text>
-              
-              <Button 
-                background='white' 
-                fontWeight="light" 
-                w='15rem' 
-                h='2.5rem'
-              >
-                <Image src={googleImage} mr='1rem' />
-                Se connecter avec Google
-              </Button>
-            </Box>
+          </Box>
           </Box>
         </Box>
         <Box
@@ -132,12 +120,12 @@ const Login = () => {
           alignItems='center' 
           justifyContent='center'
         >
-          <Image src={authent}/>
-        </Box>
+          <Image src={register}/>
+        </Box>  
       </Box>
     </Box>
     </Box>
   );
 };
 
-export default Login;
+export default Register;
