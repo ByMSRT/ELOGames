@@ -11,8 +11,7 @@ datasource db {
 }
 
 model Client {
-  id        Int       @id @default(autoincrement())
-  clientId  String    @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id        String    @id @unique @default(uuid())
   firstName String
   lastName  String
   createdAt DateTime  @default(now())
@@ -22,16 +21,16 @@ model Client {
   invoices  Invoice[]
   address   String?
   phone     String?
+  token     String?
 }
 
 model Invoice {
-  id              Int             @id @default(autoincrement())
-  invoiceId       String          @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id              String          @id @unique @default(uuid())
   createdAt       DateTime        @default(now())
   paidAt          DateTime?
   isPaid          Boolean         @default(false)
   finalPrice      Float
-  clientId        Int
+  clientId        String
   client          Client          @relation(fields: [clientId], references: [id])
   invoicesGames   invoicesGames[]
   billingAddress  String?
@@ -39,13 +38,12 @@ model Invoice {
 }
 
 model Game {
-  id            Int             @id @default(autoincrement())
-  gameId        String          @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id            String          @id @unique @default(uuid())
   stock         Int
   img           String?
   price         Float
   description   String?
-  name          String
+  name          String          @unique
   minPlayer     Int?
   maxPlayer     Int?
   duration      String?
@@ -55,8 +53,8 @@ model Game {
 
 model invoicesGames {
   id        Int     @id @default(autoincrement())
-  invoiceId Int
-  gameId    Int
+  invoiceId String
+  gameId    String
   invoice   Invoice @relation(fields: [invoiceId], references: [id])
   game      Game    @relation(fields: [gameId], references: [id])
 }

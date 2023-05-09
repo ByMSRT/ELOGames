@@ -3,24 +3,16 @@ import { GameType, PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function run() {
-    const client = await prisma.client.upsert({
-        where: {
-            email: "elouandmt@icloud.com",
-        },
-        update: {},
-        create: {
+    const client = await prisma.client.create({
+        data: {
             firstName: "Elouan",
             lastName: "DUMONT",
             email: "elouandmt@icloud.com",
             password: "123456",
         },
     });
-    const game = await prisma.game.upsert({
-        where: {
-            id: 1,
-        },
-        update: {},
-        create: {
+    const game = await prisma.game.create({
+        data: {
             name: "Game 1",
             description: "Game 1 description",
             price: 100,
@@ -31,36 +23,28 @@ async function run() {
             type: GameType.BoardGame,
         },
     });
-    const invoice = await prisma.invoice.upsert({
-        where: {
-            id: 1,
-        },
-        update: {},
-        create: {
+    const invoice = await prisma.invoice.create({
+        data: {
             isPaid: false,
             paidAt: new Date(),
             client: {
                 connect: {
-                    id: 1,
+                    id: client.id,
                 },
             },
             finalPrice: 100,
         },
     });
-    const invoiceGames = await prisma.invoicesGames.upsert({
-        where: {
-            id: 1,
-        },
-        update: {},
-        create: {
+    const invoiceGames = await prisma.invoicesGames.create({
+        data: {
             invoice: {
                 connect: {
-                    id: 1,
+                    id: invoice.id,
                 },
             },
             game: {
                 connect: {
-                    id: 1,
+                    id: game.id,
                 },
             },
         },
