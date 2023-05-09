@@ -1,12 +1,22 @@
 import NavbarShop from '../components/shared/NavbarShop';
-import { getGames } from '../CRUD/game';
-import { useEffect } from 'react';
+// import { getGames } from '../CRUD/game';
+import { useEffect , Dispatch} from 'react';
+import { useDispatch, useSelector } from 'react-redux'
 
 const Home = () => {
 
-  useEffect(() => {
-    getGames()    
-  }, [])
+  // useEffect(() => {
+  //   getGames()    
+  // }, [])
+
+  // useSelector((state : any) => console.log(state))
+
+  const dispatch = useDispatch()
+
+  // useEffect(() => {
+  //   dispatch()
+  // }, [])
+
 
   
 

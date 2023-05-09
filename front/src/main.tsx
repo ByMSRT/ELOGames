@@ -2,6 +2,8 @@ import App from './App';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import './index.css';
 import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux'
+import {store} from './redux'
 
 export const theme = extendTheme({
   colors: {
@@ -22,8 +24,10 @@ export const theme = extendTheme({
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
-  <ChakraProvider theme={theme}>
-    <App />
-  </ChakraProvider>
+  <Provider store={store}>
+    <ChakraProvider theme={theme}>
+      <App />
+    </ChakraProvider>
+  </Provider>
 );
 
