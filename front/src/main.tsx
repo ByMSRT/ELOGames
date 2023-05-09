@@ -1,8 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
 import App from './App';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import './index.css';
+import { createRoot } from 'react-dom/client';
 
 export const theme = extendTheme({
   colors: {
@@ -19,10 +18,12 @@ export const theme = extendTheme({
     body: `'gothic-a1', sans-serif`,
   },
 });
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <ChakraProvider theme={theme}>
-      <App />
-    </ChakraProvider>
-  </React.StrictMode>
+
+const root = createRoot(document.getElementById('root') as HTMLElement);
+
+root.render(
+  <ChakraProvider theme={theme}>
+    <App />
+  </ChakraProvider>
 );
+
