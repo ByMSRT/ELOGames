@@ -1,8 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
 import App from './App';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import './index.css';
+import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux'
+import {store} from './store/redux'
 
 export const theme = extendTheme({
   colors: {
@@ -19,10 +20,14 @@ export const theme = extendTheme({
     body: `'gothic-a1', sans-serif`,
   },
 });
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+
+const root = createRoot(document.getElementById('root') as HTMLElement);
+
+root.render(
+  <Provider store={store}>
     <ChakraProvider theme={theme}>
       <App />
     </ChakraProvider>
-  </React.StrictMode>
+  </Provider>
 );
+
