@@ -21,7 +21,7 @@ const Login = () => {
 
   const loginUser= async () => {
     login(email, password)
-    navigate('/home')
+    navigate('/shop')
   }
 
   return (

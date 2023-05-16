@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import CardGame from '../components/pages/CardGame';
 import { MaterialSymbol } from 'react-material-symbols';
 
-const Home = () => {
+const Shop = () => {
 
   return (
     <Box
@@ -87,4 +87,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Shop;
