@@ -8,10 +8,22 @@ import {
   Select,
 } from '@chakra-ui/react';
 import NavbarShop from '../components/shared/NavbarShop';
+import { useEffect, useState } from 'react';
 import CardGame from '../components/pages/CardGame';
 import { MaterialSymbol } from 'react-material-symbols';
+import { getGames } from '../CRUD/game';
+import { IGame } from '../utils/types';
 
 const Shop = () => {
+  const [games, setGames] = useState<IGame[]>([]);
+  const getGamesAsync = async () => {
+    setGames(await getGames());
+  };
+
+  useEffect(() => {
+    getGamesAsync();
+  }, []);
+
   return (
     <Box display="flex" alignItems="center" flexDirection="column">
       <NavbarShop />
@@ -45,18 +57,7 @@ const Shop = () => {
 
       <Box display="flex" alignItems="center" flexDirection="column" mt="10">
         <Grid templateColumns="repeat(3, 1fr)" gap={20}>
-          <CardGame />
-          <CardGame />
-          <CardGame />
-          <CardGame />
-          <CardGame />
-          <CardGame />
-          <CardGame />
-          <CardGame />
-          <CardGame />
-          <CardGame />
-          <CardGame />
-          <CardGame />
+          {games && games.map((game) => <CardGame key={game.id} game={game} />)}
         </Grid>
       </Box>
     </Box>

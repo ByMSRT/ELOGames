@@ -31,17 +31,7 @@ export interface IInvoiceGame {
     quantity: number
 }
 
-export interface IGame {
-    id: string,
-    img: string,
-    name: string,
-    price: Float32Array,
-    stock: number,
-    maxPlayer: number,
-    minPlayer: number,
-    duration: string,
-    description: string,
-}
+
 export type TabBuilderType = {
     type: 'text' | 'number' | 'price' | 'date' | 'image' | 'phone' | 'badge' | 'edit'
 }
@@ -62,15 +52,31 @@ export interface IClient {
     lastName: string,
     phone: string,
 }
+
 export interface IGame {
-    description: string,
-    duration: Date,
     id: string,
-    img: string,
-    maxPlayer: number,
-    minPlayer: number,
-    name: string,
-    price: number
     stock: number,
-    type: string,
+    img: string,
+    price: number,
+    description: string,
+    name: string,
+    minPlayer: number,
+    maxPlayer: number,
+    duration: string,
+    type: GamesType
+}
+type GamesType = "BoardGame" | "CardGame" | "MiniatureGame" | "RolePlayingGame" | "CoopGame" | "StrategyGame" | "QuizGame" | "PartyGame";
+
+export const GamesType = {
+    BoardGame: "Jeu de Plateau",
+    CardGame: "Jeu de Cartes",
+    MiniatureGame: "Jeu de Figurines",
+    RolePlayingGame: "Jeu de Rôle",
+    CoopGame: "Jeu Coopératif",
+    StrategyGame: "Jeu de Stratégie",
+    QuizGame: "Jeu de Quiz",
+    PartyGame: "Jeu d'Ambiance"
+}
+export const getGameType = (type: GamesType) => {
+    return GamesType[type];
 }
