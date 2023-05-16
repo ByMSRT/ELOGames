@@ -1,6 +1,4 @@
-
-import { Box, Button, ButtonGroup, CSSPolyfill, Card, CardBody, CardFooter, Divider, Heading, Stack, Image, Text, Highlight } from '@chakra-ui/react';
-
+import { Box, Card, CardBody, CardFooter, Divider, Heading, Image, Text, Highlight } from '@chakra-ui/react';
 import alarm from '../../assets/alarm.svg'
 import group from '../../assets/diversity.svg'
 import shopping_cart from '../../assets/add_shopping_cart.svg'

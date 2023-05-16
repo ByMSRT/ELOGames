@@ -1,11 +1,6 @@
-
-
 import { useCookies } from "react-cookie";
 import { Box, Button, Grid, Input, InputGroup, InputRightElement, Select } from '@chakra-ui/react';
 import NavbarShop from '../components/shared/NavbarShop';
-// import { getGames } from '../CRUD/game';
-import { useEffect , Dispatch} from 'react';
-import { useDispatch, useSelector } from 'react-redux'
 import CardGame from '../components/pages/CardGame';
 import { MaterialSymbol } from 'react-material-symbols';
 
