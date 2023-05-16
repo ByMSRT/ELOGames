@@ -15,6 +15,37 @@ clientRouter.get("/all", verifyAdmin, async (req, res) => {
     }
 });
 
+clientRouter.get('/dataset', async (req, res) => {
+    res.status(200).json(
+        [
+            {
+                name: 'Nom',
+                dbColumn: 'lastName',
+                type: 'text',
+            },
+            {
+                name: 'Prénom',
+                dbColumn: 'firstName',
+                type: 'text',
+            },
+            {
+                name: 'Email',
+                dbColumn: 'email',
+                type: 'text',
+            },
+            {
+                name: 'Adresse',
+                dbColumn: 'address',
+                type: 'text',
+            },
+            {
+                name: 'Téléphone',
+                dbColumn: 'phone',
+                type: 'phone',
+            },
+        ]);
+});
+
 clientRouter.post("/add", async (req, res) => {
     try {
         const firstName = req.body.firstName;

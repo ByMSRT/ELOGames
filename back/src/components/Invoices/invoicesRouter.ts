@@ -177,3 +177,35 @@ invoicesRouter.put("/update/:id", verifyAdmin, async (req, res) => {
         res.status(500).json({ message: "Something went wrong" });
     }
 });
+
+
+invoicesRouter.get('/dataset', async (req, res) => {
+    res.status(200).json(
+        [
+            {
+                name: 'Date de création',
+                dbColumn: 'createdAt',
+                type: 'date',
+            },
+            {
+                name: 'Date de Payement',
+                dbColumn: 'paidAt',
+                type: 'text',
+            },
+            {
+                name: 'Payé',
+                dbColumn: 'isPaid',
+                type: 'text',
+            },
+            {
+                name: 'Prix',
+                dbColumn: 'finalPrice',
+                type: 'price',
+            },
+            {
+                name: 'Client',
+                dbColumn: 'client',
+                type: 'text',
+            },
+        ]);
+});

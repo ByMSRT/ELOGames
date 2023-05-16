@@ -13,19 +13,16 @@ import {
   InputRightElement,
   Select,
 } from '@chakra-ui/react';
-import { TabBuilder } from '../../utils/types';
 import CustomTd from './CustomTd';
-import {
-  billColumns,
-  clientColumns,
-  gameColumns,
-} from '../../utils/tempColumns';
-import { billsData, clientsData, gamesData } from '../../utils/tempData';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { MaterialSymbol } from 'react-material-symbols';
 import Pagination from '../shared/Pagination';
 import CustomTh from './CustomTh';
+import { getDatasetGames, getGames } from '../../CRUD/game';
+import { getClients, getDatasetClients } from '../../CRUD/client';
+import { getBills, getDatasetBills } from '../../CRUD/bill';
+import { TabBuilder } from '../../utils/types';
 
 const AdaptativeTab = ({ type }: { type: 'clients' | 'bills' | 'games' }) => {
   const location = useLocation();
@@ -44,22 +41,39 @@ const AdaptativeTab = ({ type }: { type: 'clients' | 'bills' | 'games' }) => {
 
   const typeUrl = location.pathname.split('/')[2];
 
+  const getGamesAsync = async () => {
+    const games = await getGames();
+    const datasetGames = await getDatasetGames();
+    setColumns(datasetGames);
+    setData(games);
+    setFilteredData(games);
+  };
+
+  const getClientsAsync = async () => {
+    const clients = await getClients();
+    const datasetClients = await getDatasetClients();
+    setColumns(datasetClients);
+    setData(clients);
+    setFilteredData(clients);
+  };
+
+  const getBillsAsync = async () => {
+    const bills = await getBills();
+    const datasetBills = await getDatasetBills();
+    setColumns(datasetBills);
+    setData(bills);
+    setFilteredData(bills);
+  };
   useEffect(() => {
     switch (typeUrl) {
       case 'clients':
-        setColumns(clientColumns);
-        setData(clientsData);
-        setFilteredData(clientsData);
+        getClientsAsync();
         break;
       case 'bills':
-        setColumns(billColumns);
-        setData(billsData);
-        setFilteredData(billsData);
+        getBillsAsync();
         break;
       case 'games':
-        setColumns(gameColumns);
-        setData(gamesData);
-        setFilteredData(gamesData);
+        getGamesAsync();
         break;
     }
   }, [typeUrl]);

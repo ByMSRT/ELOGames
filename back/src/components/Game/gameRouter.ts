@@ -101,3 +101,45 @@ gameRouter.put("/update/:id", verifyAdmin, async (req, res) => {
         res.status(500).json({ message: "Something went wrong" });
     }
 });
+
+
+gameRouter.get('/dataset', async (req, res) => {
+    res.status(200).json(
+        [
+            {
+                name: 'Nom',
+                dbColumn: 'name',
+                type: 'text',
+            },
+            {
+                name: 'Description',
+                dbColumn: 'description',
+                type: 'text',
+            },
+            {
+                name: 'Joueurs min.',
+                dbColumn: 'minPlayer',
+                type: 'text',
+            },
+            {
+                name: 'Joueurs max.',
+                dbColumn: 'maxPlayer',
+                type: 'text',
+            },
+            {
+                name: 'Durée',
+                dbColumn: 'duration',
+                type: 'text',
+            },
+            {
+                name: 'Type',
+                dbColumn: 'type',
+                type: 'text',
+            },
+            {
+                name: 'Stock',
+                dbColumn: 'stock',
+                type: 'text',
+            },
+        ]);
+});

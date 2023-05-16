@@ -14,8 +14,6 @@ const CustomTd = ({ type, value }: CustomTdInterface) => {
       return <Td>{value}</Td>;
     case 'price':
       return <Td>{value}€</Td>;
-    case 'redirect':
-      return <Td>Rediriger</Td>;
     case 'date':
       return <Td>{value}</Td>;
     case 'image':
