@@ -1,11 +1,12 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import { verifyAdmin } from "../../middleware/admin";
 
 export const clientRouter = express.Router();
 
 const prisma = new PrismaClient();
 
-clientRouter.get("/all", async (req, res) => {
+clientRouter.get("/all", verifyAdmin, async (req, res) => {
     try {
         const clients = await prisma.client.findMany();
         res.status(200).json(clients);

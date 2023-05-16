@@ -1,11 +1,12 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import { verifyAdmin } from "../../middleware/admin";
 
 const prisma = new PrismaClient();
 
 export const invoicesRouter = express.Router();
 
-invoicesRouter.get("/all", async (req, res) => {
+invoicesRouter.get("/all", verifyAdmin, async (req, res) => {
     try {
         const invoices = await prisma.invoice.findMany();
         res.status(200).json(invoices);
@@ -41,7 +42,7 @@ invoicesRouter.post("/add", async (req, res) => {
     }
 });
 
-invoicesRouter.delete("/delete/:id", async (req, res) => {
+invoicesRouter.delete("/delete/:id", verifyAdmin, async (req, res) => {
     try {
         const id = req.params.id;
 
@@ -56,7 +57,7 @@ invoicesRouter.delete("/delete/:id", async (req, res) => {
     }
 });
 
-invoicesRouter.put("/update/:id", async (req, res) => {
+invoicesRouter.put("/update/:id", verifyAdmin, async (req, res) => {
     try {
         const id = req.params.id;
 

@@ -8,6 +8,7 @@ import { MaterialSymbol } from 'react-material-symbols';
 
 const Shop = () => {
 
+
   return (
     <Box
       display='flex'
