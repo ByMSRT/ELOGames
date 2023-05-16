@@ -25,6 +25,7 @@ import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { MaterialSymbol } from 'react-material-symbols';
 import Pagination from '../shared/Pagination';
+import CustomTh from './CustomTh';
 
 const AdaptativeTab = ({ type }: { type: 'clients' | 'bills' | 'games' }) => {
   const location = useLocation();
@@ -42,6 +43,7 @@ const AdaptativeTab = ({ type }: { type: 'clients' | 'bills' | 'games' }) => {
   const [columns, setColumns] = useState<TabBuilder[]>([]);
 
   const typeUrl = location.pathname.split('/')[2];
+
   useEffect(() => {
     switch (typeUrl) {
       case 'clients':
@@ -77,6 +79,22 @@ const AdaptativeTab = ({ type }: { type: 'clients' | 'bills' | 'games' }) => {
     setCurrentPage(1);
     setSearch('');
     setFilteredData(data);
+  };
+
+  const sortColumn = (column: string, order: 'asc' | 'desc') => {
+    setCurrentPage(1);
+    let tempData = [...filteredData];
+    tempData.sort((a, b) => {
+      if (a[column] < b[column]) {
+        return order === 'asc' ? 1 : -1;
+      }
+      if (a[column] > b[column]) {
+        return order === 'asc' ? -1 : 1;
+      }
+      return 0;
+    });
+
+    setFilteredData(tempData);
   };
 
   return (
@@ -125,7 +143,16 @@ const AdaptativeTab = ({ type }: { type: 'clients' | 'bills' | 'games' }) => {
               <Tr>
                 {columns! &&
                   columns!.map((column, index) => {
-                    return <Th key={index}>{column.name}</Th>;
+                    return (
+                      <CustomTh
+                        key={index}
+                        columnDb={column.dbColumn}
+                        columnName={column.name}
+                        onClickFunction={(e: string, order: 'asc' | 'desc') => {
+                          sortColumn(e, order);
+                        }}
+                      />
+                    );
                   })}
                 <Th>Éditer</Th>
               </Tr>

@@ -43,7 +43,7 @@ export interface IGame {
     description: string,
 }
 export type TabBuilderType = {
-    type: 'text' | 'number' | 'price' | 'edit' | 'redirect' | 'date' | 'image' | 'phone' | 'badge'
+    type: 'text' | 'number' | 'price' | 'date' | 'image' | 'phone' | 'badge'
 }
 
 export interface TabBuilder {
