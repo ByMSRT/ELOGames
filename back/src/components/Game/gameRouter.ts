@@ -1,5 +1,6 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import { verifyAdmin } from "../../middleware/admin";
 
 export const gameRouter = express.Router();
 
@@ -14,7 +15,7 @@ gameRouter.get("/all", async (req, res) => {
     }
 });
 
-gameRouter.post("/add", async (req, res) => {
+gameRouter.post("/add", verifyAdmin, async (req, res) => {
     try {
         const name = req.body.name;
         const price = req.body.price;
@@ -43,7 +44,7 @@ gameRouter.post("/add", async (req, res) => {
     }
 });
 
-gameRouter.delete("/delete/:id", async (req, res) => {
+gameRouter.delete("/delete/:id", verifyAdmin, async (req, res) => {
     try {
         const id = req.params.id;
 
@@ -58,7 +59,7 @@ gameRouter.delete("/delete/:id", async (req, res) => {
     }
 });
 
-gameRouter.put("/update/:id", async (req, res) => {
+gameRouter.put("/update/:id", verifyAdmin, async (req, res) => {
     try {
         const id = req.params.id;
         const getGame = await prisma.game.findUnique({

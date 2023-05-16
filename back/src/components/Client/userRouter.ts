@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { verifyToken } from "../../middleware/auth";
+import { verifyAdmin } from "../../middleware/admin";
 dotenv.config();
 
 export const userRouter = express.Router();
@@ -12,11 +13,9 @@ const prisma = new PrismaClient();
 
 userRouter.post("/register", async (req, res) => {
     try {
-        
-        const { email, password, firstName, lastName } = req.body;
-        
-        console.log(req.body);
-        
+
+        const { email, password, firstName, lastName, isAdmin } = req.body;
+
         const userExist = await prisma.client.findUnique({
             where: {
                 email: email,
@@ -35,6 +34,7 @@ userRouter.post("/register", async (req, res) => {
                 password: hash,
                 firstName: firstName,
                 lastName: lastName,
+                isAdmin: isAdmin,
             },
         });
 
@@ -57,7 +57,6 @@ userRouter.post("/register", async (req, res) => {
                 token: token,
             },
         });
-
         res.status(201).json(update);
     } catch {
         res.status(500).json({ message: "Something went wrong" });
