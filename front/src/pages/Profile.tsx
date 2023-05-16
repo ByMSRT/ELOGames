@@ -179,7 +179,7 @@ export const Profile = () => {
                 <Heading size='md' mt="1rem" > Historique des commandes</Heading>
 
                 <Box>
-
+                    {/* TODO Créer un composant pour les factures */}
                     <Card
                         minW='xs'
                         mt="1rem"
