@@ -1,8 +1,11 @@
+import { CookiesProvider } from "react-cookie";
 import { AppRouter } from './routes/AppRouter';
 
 function App() {
   return (
-    <AppRouter/>
+    <CookiesProvider>
+      <AppRouter/>
+    </CookiesProvider>
   );
 }
 
