@@ -3,16 +3,23 @@ import { GameType, PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function run() {
-    const client = await prisma.client.create({
-        data: {
-            firstName: "Elouan",
-            lastName: "DUMONT",
-            email: "elouandmt@icloud.com",
-            password: "123456",
-        },
-    });
-    const game = await prisma.game.create({
-        data: {
+    const client = await prisma.client.upsert(
+        {
+            where: { id: "a5ac7396-9dda-4c12-a5af-8251652e7713" || 0 },
+            update: {},
+            create: {
+                id: "a5ac7396-9dda-4c12-a5af-8251652e7713",
+                firstName: "Elouan",
+                lastName: "DUMONT",
+                email: "elouandmt@icloud.com",
+                password: "123456",
+            },
+        });
+    const game = await prisma.game.upsert({
+        where: { id: "4eefd8a8-dcf9-445f-860f-b4c1aee65625" || 0 },
+        update: {},
+        create: {
+            id: "4eefd8a8-dcf9-445f-860f-b4c1aee65625",
             name: "Game 1",
             description: "Game 1 description",
             price: 100,
@@ -23,8 +30,11 @@ async function run() {
             type: GameType.BoardGame,
         },
     });
-    const invoice = await prisma.invoice.create({
-        data: {
+    const invoice = await prisma.invoice.upsert({
+        where: { id: "809892a4-8cf6-43da-b496-7cb343a1f6e9" || 0 },
+        update: {},
+        create: {
+            id: "809892a4-8cf6-43da-b496-7cb343a1f6e9",
             isPaid: false,
             paidAt: new Date(),
             client: {
@@ -35,8 +45,10 @@ async function run() {
             finalPrice: 100,
         },
     });
-    const invoiceGames = await prisma.invoicesGames.create({
-        data: {
+    const invoiceGames = await prisma.invoicesGames.upsert({
+        where: { id: 1 || 0 },
+        update: {},
+        create: {
             invoice: {
                 connect: {
                     id: invoice.id,
