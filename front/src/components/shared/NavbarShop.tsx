@@ -2,8 +2,6 @@ import { Box, Image, Link } from "@chakra-ui/react"
 import logo from '../../assets/logo.svg'
 import person from '../../assets/person.svg'
 import shopping_cart from '../../assets/shopping_cart.svg'
-import {MaterialSymbol} from 'react-material-symbols'
-import 'react-material-symbols/dist/rounded.css';
 
 const NavbarShop = () => {
 
