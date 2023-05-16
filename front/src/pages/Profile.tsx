@@ -15,8 +15,13 @@ export const Profile = () => {
 
 
     const [profile, setProfile] = useState<IProfile>();
-    const [edit, isEdit] = useState(false);
+    const [edit, setEdit] = useState(false);
     const [firstName, setFirstName] = useState(profile?.firstName);
+    const [lastName, setLastName] = useState(profile?.lastName);
+    const [email, setEmail] = useState(profile?.email);
+    const [address, setAddress] = useState(profile?.address);
+    const [phone, setPhone] = useState(profile?.phone);
+
 
     const getProfileAsync = async () => {
         setProfile(await getUser());
@@ -26,6 +31,11 @@ export const Profile = () => {
         logout();
         navigate('/login');
     };
+
+    const toggleUpdateUser = (firstName: string, lastName: string, email: string, address: string, phone: string) => {
+        updateUser(firstName!, lastName!, email!, address!, phone!);
+        setEdit(!edit)
+    }
   
     useEffect(() => {
       getProfileAsync();
@@ -46,6 +56,7 @@ export const Profile = () => {
             <Box
                 mt='5rem'
                 h='100%'
+                w="50rem"
                 display='flex'
                 flexDirection='column'
             >
@@ -54,7 +65,9 @@ export const Profile = () => {
                     templateColumns="repeat(2, 1fr)"
                     h='100%'
                 >
-                    <Box>
+                    <Box
+                        w="20rem"
+                    >
                         <Box
                             borderRadius='50%'
                             w='9rem'
@@ -76,7 +89,7 @@ export const Profile = () => {
                             borderRadius='30px'
                             alignSelf='center'
                             justifySelf='center'
-                            onClick={() => isEdit(!edit)}
+                            onClick={() => setEdit(!edit)}
                         >
                             <Image src={editImg} w='3rem' h='3rem' />
                         </Button>
@@ -92,7 +105,9 @@ export const Profile = () => {
                                     borderRadius='30px'
                                     alignSelf='center'
                                     justifySelf='center'
-                                    onClick={() => isEdit(!edit)}
+                                    onClick={() => 
+                                        toggleUpdateUser(firstName!, lastName!, email!, address!, phone!)
+                                    }
                                 >
                                     <Image src={validate} w='3rem' h='3rem' />
                                 </Button>
@@ -120,37 +135,41 @@ export const Profile = () => {
                         flexDirection='column'
                     >
                         <Input 
-                            value={profile?.lastName}
+                            defaultValue={profile?.firstName}
                             background='white'
                             mb='2rem'
                             disabled={!edit}
                             onChange={(e) => setFirstName(e.target.value)}
                         />
                         <Input 
-                            value={profile?.firstName}
+                            defaultValue={profile?.lastName}
                             background='white'
                             mb='2rem'
                             disabled={!edit}
+                            onChange={(e) => setLastName(e.target.value)}
                         />
                         <Input 
-                            value={profile?.email}
+                            defaultValue={profile?.email}
                             background='white'
                             mb='2rem'
                             disabled={!edit}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                         <Input 
                             placeholder="Votre adresse"
-                            value={profile?.address ? profile?.address : ""}
+                            defaultValue={profile?.address ? profile?.address : ""}
                             background='white'
                             mb='2rem'
                             disabled={!edit}
+                            onChange={(e) => setAddress(e.target.value)}
                         />
                         <Input 
                             placeholder="Votre numéro de téléphone"
-                            value={profile?.phone ? profile?.phone : ""} 
+                            defaultValue={profile?.phone ? profile?.phone : ""} 
                             background='white'
                             mb='2rem'
                             disabled={!edit}
+                            onChange={(e) => setPhone(e.target.value)}
                         />
                     </Box>
 
