@@ -1,6 +1,7 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 import { verifyAdmin } from "../../middleware/admin";
+import { verifyToken } from "../../middleware/auth";
 
 const prisma = new PrismaClient();
 
@@ -37,6 +38,27 @@ invoicesRouter.post("/add", async (req, res) => {
             },
         });
         res.status(200).json(invoice);
+    } catch {
+        res.status(500).json({ message: "Something went wrong" });
+    }
+});
+
+invoicesRouter.get("/client", verifyToken, async (req, res) => {
+    try {
+        const token = req.headers.authorization?.split(" ")[1];
+
+        const client = await prisma.client.findFirstOrThrow({
+            where: {
+                token: token,
+            },
+        });
+
+        const invoices = await prisma.invoice.findMany({
+            where: {
+                clientId: client.id,
+            },
+        });
+        res.status(200).json(invoices);
     } catch {
         res.status(500).json({ message: "Something went wrong" });
     }
