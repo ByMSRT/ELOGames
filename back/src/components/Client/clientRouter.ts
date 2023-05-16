@@ -109,6 +109,13 @@ clientRouter.get("/invoice/:id", async (req, res) => {
             where: {
                 clientId: id,
             },
+            include: {
+                invoicesGames: {
+                    include: {
+                        game: true,
+                    },
+                },
+            },
         });
         const clientInvoices = { client, invoices };
 

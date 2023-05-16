@@ -8,7 +8,16 @@ export const invoicesRouter = express.Router();
 
 invoicesRouter.get("/all", verifyAdmin, async (req, res) => {
     try {
-        const invoices = await prisma.invoice.findMany();
+        const invoices = await prisma.invoice.findMany({
+            include: {
+                client: true,
+                invoicesGames: {
+                    include: {
+                        game: true,
+                    },
+                },
+            },
+        });
         res.status(200).json(invoices);
     } catch {
         res.status(500).json({ message: "Something went wrong" });
