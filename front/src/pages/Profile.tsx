@@ -13,7 +13,6 @@ export const Profile = () => {
 
     const navigate = useNavigate();
 
-
     const [profile, setProfile] = useState<IProfile>();
     const [edit, setEdit] = useState(false);
     const [firstName, setFirstName] = useState(profile?.firstName);

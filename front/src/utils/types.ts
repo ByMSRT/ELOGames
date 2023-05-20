@@ -9,3 +9,4 @@ export interface IProfile {
     address: string,
     phone: string
 }
+
