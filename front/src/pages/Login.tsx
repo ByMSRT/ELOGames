@@ -21,7 +21,7 @@ const Login = () => {
 
   const loginUser= async () => {
     login(email, password)
-    navigate('/home')
+    navigate('/shop')
   }
 
   return (
@@ -80,7 +80,7 @@ const Login = () => {
                 />
             </FormControl>
 
-            <FormControl variant="floating" id="first-name" isRequired >
+            <FormControl variant="floating" id="password" isRequired >
               <FormLabel>Mot de passe</FormLabel>
               <InputGroup size='md'>
                 <Input

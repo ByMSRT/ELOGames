@@ -1,21 +1,10 @@
-import {
-    Box,
-    Button,
-    Grid,
-    Input,
-    InputGroup,
-    InputRightElement,
-    Select,
-} from "@chakra-ui/react";
-import NavbarShop from "../components/shared/NavbarShop";
-// import { getGames } from '../CRUD/game';
-import { useEffect, Dispatch } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import CardGame from "../components/pages/CardGame";
-import { MaterialSymbol } from "react-material-symbols";
 import { useCookies } from "react-cookie";
+import { Box, Button, Grid, Input, InputGroup, InputRightElement, Select } from '@chakra-ui/react';
+import NavbarShop from '../components/shared/NavbarShop';
+import CardGame from '../components/pages/CardGame';
+import { MaterialSymbol } from 'react-material-symbols';
 
-const Home = () => {
+const Shop = () => {
     return (
         <Box display="flex" alignItems="center" flexDirection="column">
             <NavbarShop />
@@ -73,4 +62,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default Shop;
