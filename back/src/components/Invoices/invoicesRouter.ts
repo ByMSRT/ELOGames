@@ -63,7 +63,8 @@ invoicesRouter.post("/add", async (req, res) => {
                         },
                     });
                 }
-                finalPrice = getGame.price * element.quantity;
+                const price = getGame.price * element.quantity;
+                finalPrice += price;
             })
         ).then(() => {
             const invoice = prisma.invoice
