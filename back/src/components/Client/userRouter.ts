@@ -75,10 +75,6 @@ userRouter.post("/login", async (req, res) => {
             res.status(401).json({ message: "User does not exist" });
         }
 
-        if (password !== client?.password) {
-            res.status(404).json({ message: "Wrong password" });
-        }
-
         if (client?.password === null) {
             res.status(401).json({ message: "User does not exist" });
         } else if (password !== client?.password) {
