@@ -28,22 +28,62 @@ invoicesRouter.get("/all", verifyAdmin, async (req, res) => {
 invoicesRouter.post("/add", async (req, res) => {
     try {
         const paid = req.body.paid || false;
-        const price = req.body.price;
         const client = req.body.client;
         const billingAddress = req.body.billingAddress || null;
         const shippingAddress = req.body.shippingAddress || null;
+        const games: { id: string; quantity: number }[] = req.body.games;
 
-        if (!price || !client) {
+        if (!client || !games) {
             return res.status(400).json({ message: "Missing fields" });
         }
+
+        let finalPrice = 0;
+
+        const finalGame = games.forEach(async (element) => {
+            console.log(element.id);
+            const getGame = await prisma.game.findFirstOrThrow({
+                where: {
+                    id: element.id,
+                },
+            });
+
+            if (getGame.stock < element.quantity) {
+                return res.status(400).json({ message: "Not enough stock" });
+            } else {
+                const gameStock = await prisma.game.update({
+                    where: {
+                        id: getGame.id,
+                    },
+                    data: {
+                        stock: {
+                            decrement: getGame.stock - element.quantity,
+                        },
+                    },
+                });
+            }
+
+            finalPrice += getGame.price * element.quantity;
+        });
 
         const invoice = await prisma.invoice.create({
             data: {
                 isPaid: paid,
-                finalPrice: price,
+                finalPrice,
+                paidAt: paid ? new Date() : null,
                 billingAddress: billingAddress,
                 shippingAddress: shippingAddress,
                 clientId: client,
+                invoicesGames: {
+                    create: games.map((element) => {
+                        return {
+                            game: {
+                                connect: {
+                                    id: element.id,
+                                },
+                            },
+                        };
+                    }),
+                },
             },
         });
         res.status(200).json(invoice);
