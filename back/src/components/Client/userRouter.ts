@@ -74,9 +74,9 @@ userRouter.post("/login", async (req, res) => {
         if (!client) {
             res.status(401).json({ message: "User does not exist" });
         }
-
         if (client?.password === null) {
             res.status(401).json({ message: "User does not exist" });
+            
         } else {
             if (client && (await bcrypt.compare(password, client.password))) {
                 const token = jwt.sign(

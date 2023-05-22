@@ -63,7 +63,7 @@ export const getUser = async () => {
     }
 }
 
-export const updateUser = async (firstName: string, lastName: string, email:string, address: string, phone: string) => {
+export const updateUser = async (firstName: string, lastName: string, email:string, address: string, phone: string, password?: string) => {
 
     try {
         const response = await axios.put(`${BASE_URL}/profile`, {
@@ -71,7 +71,8 @@ export const updateUser = async (firstName: string, lastName: string, email:stri
             lastName,
             email,
             address,
-            phone
+            phone,
+            password
         },
         {
             headers: {

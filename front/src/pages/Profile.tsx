@@ -2,17 +2,19 @@ import { Box, Card, Divider, Grid, Heading, Input, CardBody, Image, Text, Button
 import Navbar from "../components/shared/NavbarShop"
 import photo from '../assets/aventuriers-du-rail-europe-15-ans 1.png'
 import { getUser, logout, updateUser} from "../CRUD/user"
+import { getInvoicesByClient } from "../CRUD/client"
 import { useEffect, useState } from "react"
-import { IProfile } from "../utils/types"
+import { IProfile, IClient } from "../utils/types"
 import editImg from '../assets/edit.svg'
 import validate from '../assets/done.svg'
 import logoutImg from '../assets/logout.svg'
 import { useNavigate } from "react-router-dom";
+import { InvoiceCard } from "../components/pages/InvoicesCard";
 
 export const Profile = () => {
 
     const navigate = useNavigate();
-
+    
     const [profile, setProfile] = useState<IProfile>();
     const [edit, setEdit] = useState(false);
     const [firstName, setFirstName] = useState(profile?.firstName);
@@ -21,9 +23,16 @@ export const Profile = () => {
     const [address, setAddress] = useState(profile?.address);
     const [phone, setPhone] = useState(profile?.phone);
 
+    // const [oldPassword, setOldPassword] = useState(profile?.password);
+    // const [checkPassword, setCheckPassword] = useState("");
+    // const [password, setPassword] = useState(profile?.password);
+
+    const [client, setInvoices] = useState<IClient>();
 
     const getProfileAsync = async () => {
-        setProfile(await getUser());
+        const profile = await getUser();
+        setProfile(profile);
+        setInvoices(await getInvoicesByClient(profile?.id!));
     };
 
     const logoutAndRedirect = async () => {
@@ -35,15 +44,15 @@ export const Profile = () => {
         updateUser(firstName!, lastName!, email!, address!, phone!);
         setEdit(!edit)
     }
-  
+
     useEffect(() => {
-      getProfileAsync();
+        getProfileAsync();
     }, []);
 
     const pseudo = profile?.firstName[0]! + profile?.lastName[0]!
 
 
-    return (
+return (
         <Box
             w='100%'
             display='flex'
@@ -170,140 +179,55 @@ export const Profile = () => {
                             disabled={!edit}
                             onChange={(e) => setPhone(e.target.value)}
                         />
+
+                        {
+                            edit && (
+                                <>
+                                <Divider orientation="horizontal" borderColor='black' borderBottomWidth='3px' mb="1rem" />
+                                <Input
+                                    placeholder="Mot de passe actuel"
+                                    defaultValue={""}
+                                    background='white'
+                                    mb='2rem'
+                                    disabled={!edit}
+                                />
+                                <Input
+                                    placeholder="Votre nouveau mot de passe"
+                                    defaultValue={""}
+                                    background='white'
+                                    mb='2rem'
+                                    disabled={!edit}
+                                />
+                                <Input
+                                    placeholder="Confirmer votre nouveau mot de passe"
+                                    defaultValue={""}
+                                    background='white'
+                                    mb='2rem'
+                                    disabled={!edit} 
+                                />
+                                </>
+                            )
+                        }
                     </Box>
 
                 </Grid>
-                
                 <Divider orientation="horizontal" borderColor='black' borderBottomWidth='4px' />
                 <Heading size='md' mt="1rem" > Historique des commandes</Heading>
-
-                <Box>
-                    {/* TODO Créer un composant pour les factures */}
-                    <Card
-                        minW='xs'
-                        mt="1rem"
-                        mb="1rem"
-                        background={'#F7F6FF'}
-                        borderColor={'black'}
-                    >
-                        <CardBody
-                            display='flex'
-                            justifyContent='flex-start'
-                            alignItems='center'
-                        >
-                        <Image
-                            w='6rem'
-                            h='6rem'
-                            src={photo}
-                        />
-                        <Box
-                            display='flex'
-                            flexDirection='column'
-                            justifyContent='center'
-                            // textStyle=''
-                            gap='0.5rem'
-                            ml='1rem'
-                        >
-                            <Text as='b'>Les aventuriers du rail</Text>
-                            <Text as='b'>Le : 16/05/2023</Text>
-                            <Text as='b'>Prix : 35.5€</Text>
-                        </Box>
-                        </CardBody>
-                    </Card>
-                    <Card
-                        minW='xs'
-                        mt="1rem"
-                        mb="1rem"
-                        background={'#F7F6FF'}
-                        borderColor={'black'}
-                    >
-                        <CardBody
-                            display='flex'
-                            justifyContent='flex-start'
-                            alignItems='center'
-                        >
-                        <Image
-                            w='6rem'
-                            h='6rem'
-                            src={photo}
-                        />
-                        <Box
-                            display='flex'
-                            flexDirection='column'
-                            justifyContent='center'
-                            gap='0.5rem'
-                            ml='1rem'
-                        >
-                            <Text as='b'>Les aventuriers du rail</Text>
-                            <Text as='b'>Le : 16/05/2023</Text>
-                            <Text as='b'>Prix : 35.5€</Text>
-                        </Box>
-                        </CardBody>
-                    </Card>
-                    <Card
-                        minW='xs'
-                        mt="1rem"
-                        mb="1rem"
-                        background={'#F7F6FF'}
-                        borderColor={'black'}
-                    >
-                        <CardBody
-                            display='flex'
-                            justifyContent='flex-start'
-                            alignItems='center'
-                        >
-                        <Image
-                            w='6rem'
-                            h='6rem'
-                            src={photo}
-                        />
-                        <Box
-                            display='flex'
-                            flexDirection='column'
-                            justifyContent='center'
-                            gap='0.5rem'
-                            ml='1rem'
-                        >
-                            <Text as='b'>Les aventuriers du rail</Text>
-                            <Text as='b'>Le : 16/05/2023</Text>
-                            <Text as='b'>Prix : 35.5€</Text>
-                        </Box>
-                        </CardBody>
-                    </Card>
-                    <Card
-                        minW='xs'
-                        mt="1rem"
-                        mb="1rem"
-                        background={'#F7F6FF'}
-                        borderColor={'black'}
-                    >
-                        <CardBody
-                            display='flex'
-                            justifyContent='flex-start'
-                            alignItems='center'
-                        >
-                        <Image
-                            w='6rem'
-                            h='6rem'
-                            src={photo}
-                        />
-                        <Box
-                            display='flex'
-                            flexDirection='column'
-                            justifyContent='center'
-                            gap='0.5rem'
-                            ml='1rem'
-                        >
-                            <Text as='b'>Les aventuriers du rail</Text>
-                            <Text as='b'>Le : 16/05/2023</Text>
-                            <Text as='b'>Prix : 35.5€</Text>
-                        </Box>
-                        </CardBody>
-                    </Card>
-                </Box>
+                {
+                    client?.invoices.length === 0 ? (
+                        <Heading size='md' color={'black'} m='auto' mt='5rem' >Vous n'avez pas encore de facture</Heading>
+                    ) : (
+                        client?.invoices.map((invoice, index) => {
+                            return (
+                                    <Box  key={index}>    
+                                    <InvoiceCard invoice={invoice} index={index} />
+                                </Box>
+                            )
+                        })
+                    )
+                    
+                }
             </Box>
-
-
         </Box>
     )
 }
