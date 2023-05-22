@@ -60,6 +60,7 @@ async function run() {
                     id: game.id,
                 },
             },
+            quantity: 1,
         },
     });
 }

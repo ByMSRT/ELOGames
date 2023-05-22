@@ -39,54 +39,67 @@ invoicesRouter.post("/add", async (req, res) => {
 
         let finalPrice = 0;
 
-        const finalGame = games.forEach(async (element) => {
-            console.log(element.id);
-            const getGame = await prisma.game.findFirstOrThrow({
-                where: {
-                    id: element.id,
-                },
-            });
-
-            if (getGame.stock < element.quantity) {
-                return res.status(400).json({ message: "Not enough stock" });
-            } else {
-                const gameStock = await prisma.game.update({
+        await Promise.all(
+            games.map(async (element) => {
+                const getGame = await prisma.game.findFirstOrThrow({
                     where: {
-                        id: getGame.id,
-                    },
-                    data: {
-                        stock: {
-                            decrement: element.quantity,
-                        },
+                        id: element.id,
                     },
                 });
-            }
 
-            finalPrice += getGame.price * element.quantity;
-        });
-
-        const invoice = await prisma.invoice.create({
-            data: {
-                isPaid: paid,
-                finalPrice,
-                paidAt: paid ? new Date() : null,
-                billingAddress: billingAddress,
-                shippingAddress: shippingAddress,
-                clientId: client,
-                invoicesGames: {
-                    create: games.map((element) => {
-                        return {
-                            game: {
-                                connect: {
-                                    id: element.id,
-                                },
+                if (getGame.stock < element.quantity) {
+                    return res
+                        .status(400)
+                        .json({ message: "Not enough stock" });
+                } else {
+                    await prisma.game.update({
+                        where: {
+                            id: getGame.id,
+                        },
+                        data: {
+                            stock: {
+                                decrement: element.quantity,
                             },
-                        };
-                    }),
-                },
-            },
+                        },
+                    });
+                }
+                finalPrice = getGame.price * element.quantity;
+            })
+        ).then(() => {
+            const invoice = prisma.invoice
+                .create({
+                    data: {
+                        isPaid: paid,
+                        finalPrice: finalPrice,
+                        paidAt: paid ? new Date() : null,
+                        billingAddress: billingAddress,
+                        shippingAddress: shippingAddress,
+                        clientId: client,
+                        invoicesGames: {
+                            create: games.map((element) => {
+                                return {
+                                    game: {
+                                        connect: {
+                                            id: element.id,
+                                        },
+                                    },
+                                    quantity: element.quantity,
+                                };
+                            }),
+                        },
+                    },
+                    include: {
+                        invoicesGames: {
+                            include: {
+                                game: true,
+                            },
+                        },
+                    },
+                })
+                .then((invoice) => {
+                    res.status(200).json(invoice);
+                });
         });
-        res.status(200).json(invoice);
     } catch {
         res.status(500).json({ message: "Something went wrong" });
     }
