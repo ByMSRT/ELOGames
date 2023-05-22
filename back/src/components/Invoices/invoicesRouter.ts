@@ -32,8 +32,9 @@ invoicesRouter.post("/add", async (req, res) => {
         const client = req.body.client;
         const billingAddress = req.body.billingAddress || null;
         const shippingAddress = req.body.shippingAddress || null;
+        const game = req.body.game;
 
-        if (!price || !client) {
+        if (!price || !client || !game) {
             return res.status(400).json({ message: "Missing fields" });
         }
 
@@ -44,6 +45,17 @@ invoicesRouter.post("/add", async (req, res) => {
                 billingAddress: billingAddress,
                 shippingAddress: shippingAddress,
                 clientId: client,
+                invoicesGames: {
+                    create: [
+                        {
+                            game: {
+                                connect: {
+                                    id: game,
+                                },
+                            },
+                        },
+                    ],
+                },
             },
         });
         res.status(200).json(invoice);
