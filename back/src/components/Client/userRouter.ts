@@ -13,7 +13,6 @@ const prisma = new PrismaClient();
 
 userRouter.post("/register", async (req, res) => {
     try {
-
         const { email, password, firstName, lastName, isAdmin } = req.body;
 
         const userExist = await prisma.client.findUnique({
@@ -38,7 +37,6 @@ userRouter.post("/register", async (req, res) => {
             },
         });
 
-        
         const token = jwt.sign(
             {
                 email: client.email,
@@ -106,6 +104,43 @@ userRouter.post("/login", async (req, res) => {
     }
 });
 
+userRouter.put("/update", verifyToken, async (req, res) => {
+    try {
+        const oldPassword = req.body.oldPassword;
+        const newPassword = req.body.newPassword;
+
+        const getToken = req.headers["authorization"];
+        const token = getToken && getToken.split(" ")[1];
+
+        const client = await prisma.client.findFirstOrThrow({
+            where: {
+                token: token,
+            },
+        });
+
+        if (client.password !== null) {
+            if (await bcrypt.compare(oldPassword, client.password)) {
+                const hash = await bcrypt.hash(newPassword, 10);
+
+                const update = await prisma.client.update({
+                    where: {
+                        email: client.email,
+                    },
+                    data: {
+                        password: hash,
+                    },
+                });
+
+                res.status(200).json(update);
+            } else {
+                res.status(401).json({ message: "Wrong password" });
+            }
+        }
+    } catch {
+        res.status(500).json({ message: "Something went wrong" });
+    }
+});
+
 userRouter.get("/profile", verifyToken, async (req, res) => {
     try {
         const getToken = req.headers["authorization"];
@@ -164,12 +199,6 @@ userRouter.put("/profile", verifyToken, async (req, res) => {
         const email = req.body.email || client.email;
         const address = req.body.address || client.address;
         const phone = req.body.phone || client.phone;
-        let password = "";
-        if (req.body.password) {
-            password = await bcrypt.hash(req.body.password, 10);
-        } else if (client.password) {
-            password = client.password;
-        }
 
         const update = await prisma.client.update({
             where: {
@@ -179,7 +208,6 @@ userRouter.put("/profile", verifyToken, async (req, res) => {
                 firstName: firstName,
                 lastName: lastName,
                 email: email,
-                password: password,
                 address: address,
                 phone: phone,
             },
