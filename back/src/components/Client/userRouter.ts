@@ -74,11 +74,11 @@ userRouter.post("/login", async (req, res) => {
         if (!client) {
             res.status(401).json({ message: "User does not exist" });
         }
-
+        if (password !== client?.password) {
+            res.status(404).json({ message: "Wrong password" });
+        }
         if (client?.password === null) {
             res.status(401).json({ message: "User does not exist" });
-        } else if (password !== client?.password) {
-            res.status(404).json({ message: "Wrong password" });
         } else {
             if (client && (await bcrypt.compare(password, client.password))) {
                 const token = jwt.sign(

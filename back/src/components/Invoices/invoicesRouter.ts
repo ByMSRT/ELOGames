@@ -56,7 +56,7 @@ invoicesRouter.post("/add", async (req, res) => {
                     },
                     data: {
                         stock: {
-                            decrement: getGame.stock - element.quantity,
+                            decrement: element.quantity,
                         },
                     },
                 });
