@@ -1,7 +1,6 @@
-import { Box, Card, Divider, Grid, Heading, Input, CardBody, Image, Text, Button} from "@chakra-ui/react"
+import { Box, Card, Divider, Grid, Heading, Input, CardBody, Image, Text, Button, FormControl, InputGroup, InputRightElement} from "@chakra-ui/react"
 import Navbar from "../components/shared/NavbarShop"
-import photo from '../assets/aventuriers-du-rail-europe-15-ans 1.png'
-import { getUser, logout, updateUser} from "../CRUD/user"
+import { getUser, logout, updateUser, updateUserPassword} from "../CRUD/user"
 import { getInvoicesByClient } from "../CRUD/client"
 import { useEffect, useState } from "react"
 import { IProfile, IClient } from "../utils/types"
@@ -10,10 +9,14 @@ import validate from '../assets/done.svg'
 import logoutImg from '../assets/logout.svg'
 import { useNavigate } from "react-router-dom";
 import { InvoiceCard } from "../components/pages/InvoicesCard";
+import {MaterialSymbol} from 'react-material-symbols'
+import 'react-material-symbols/dist/rounded.css';
 
 export const Profile = () => {
 
     const navigate = useNavigate();
+
+    const [show, setShow] = useState(false)
     
     const [profile, setProfile] = useState<IProfile>();
     const [edit, setEdit] = useState(false);
@@ -23,9 +26,11 @@ export const Profile = () => {
     const [address, setAddress] = useState(profile?.address);
     const [phone, setPhone] = useState(profile?.phone);
 
-    // const [oldPassword, setOldPassword] = useState(profile?.password);
-    // const [checkPassword, setCheckPassword] = useState("");
-    // const [password, setPassword] = useState(profile?.password);
+    const [editPassword, setEditPassword] = useState(false);
+
+    const [oldPassword, setOldPassword] = useState("");
+    const [checkPassword, setCheckPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
 
     const [client, setInvoices] = useState<IClient>();
 
@@ -51,8 +56,7 @@ export const Profile = () => {
 
     const pseudo = profile?.firstName[0]! + profile?.lastName[0]!
 
-
-return (
+    return (
         <Box
             w='100%'
             display='flex'
@@ -179,32 +183,85 @@ return (
                             disabled={!edit}
                             onChange={(e) => setPhone(e.target.value)}
                         />
+                        <Divider orientation="horizontal" borderColor='black' borderBottomWidth='3px' mb="1rem" />
+                    
+                        <Button 
+                            backgroundColor={editPassword ? 'pink' : 'black'}
+                            mb='1rem'
+                            borderRadius='15px'
+                            color={editPassword ? 'black' : 'white'}
+                            onClick={() => setEditPassword(!editPassword)}
+                        >
+                            {editPassword ? "Annuler" : "Modifier le mot de passe"}
+                        </Button>
 
                         {
-                            edit && (
+                            editPassword && (
                                 <>
-                                <Divider orientation="horizontal" borderColor='black' borderBottomWidth='3px' mb="1rem" />
-                                <Input
-                                    placeholder="Mot de passe actuel"
-                                    defaultValue={""}
-                                    background='white'
-                                    mb='2rem'
-                                    disabled={!edit}
-                                />
-                                <Input
-                                    placeholder="Votre nouveau mot de passe"
-                                    defaultValue={""}
-                                    background='white'
-                                    mb='2rem'
-                                    disabled={!edit}
-                                />
-                                <Input
-                                    placeholder="Confirmer votre nouveau mot de passe"
-                                    defaultValue={""}
-                                    background='white'
-                                    mb='2rem'
-                                    disabled={!edit} 
-                                />
+                                    <FormControl variant="floating" id="oldPassword" isRequired >
+                                        <InputGroup size='md'>
+                                        <Input
+                                            type={show ? 'text' : 'password'}
+                                            placeholder="Mot de passe actuel"
+                                            background='white'
+                                            mb='2rem'
+                                            disabled={!editPassword}
+                                            value={oldPassword}
+                                            onChange={(e) => setOldPassword(e.target.value)}
+                                        />
+                                        <InputRightElement width='4.5rem'>
+                                            <Button background='white' h='1.75rem' size='sm' onClick={()=>setShow(!show)}>
+                                            {show ? <MaterialSymbol icon="visibility" ></MaterialSymbol> : <MaterialSymbol icon="visibility_off" ></MaterialSymbol>}
+                                            </Button>
+                                        </InputRightElement>
+                                        </InputGroup>
+                                    </FormControl>
+                                    <FormControl variant="floating" id="checkPassword" isRequired >
+                                        <InputGroup size='md'>
+                                        <Input
+                                            type={show ? 'text' : 'password'}
+                                            placeholder="Votre nouveau mot de passe"
+                                            background='white'
+                                            mb='2rem'
+                                            disabled={oldPassword === ''}
+                                            value={checkPassword}
+                                            onChange={(e) => setCheckPassword(e.target.value)}
+                                        />
+                                        <InputRightElement width='4.5rem'>
+                                            <Button background='white' h='1.75rem' size='sm' onClick={()=>setShow(!show)}>
+                                            {show ? <MaterialSymbol icon="visibility" ></MaterialSymbol> : <MaterialSymbol icon="visibility_off" ></MaterialSymbol>}
+                                            </Button>
+                                        </InputRightElement>
+                                        </InputGroup>
+                                    </FormControl>
+                                    <FormControl variant="floating" id="newPassword" isRequired >
+                                        <InputGroup size='md'>
+                                        <Input
+                                            type={show ? 'text' : 'password'}
+                                            placeholder="Confirmer de passe actuel"
+                                            background='white'
+                                            mb='2rem'
+                                            disabled={checkPassword === ''}
+                                            value={newPassword}
+                                            onChange={(e) => setNewPassword(e.target.value)}
+                                        />
+                                        <InputRightElement width='4.5rem'>
+                                            <Button background='white' h='1.75rem' size='sm' onClick={()=>setShow(!show)}>
+                                            {show ? <MaterialSymbol icon="visibility" ></MaterialSymbol> : <MaterialSymbol icon="visibility_off" ></MaterialSymbol>}
+                                            </Button>
+                                        </InputRightElement>
+                                        </InputGroup>
+                                    </FormControl>
+                                    <Button 
+                                        backgroundColor='green'
+                                        mb='1rem'
+                                        borderRadius='15px'
+                                        color={'black'}
+                                        isDisabled={checkPassword !== newPassword}
+                                        onClick={() => updateUserPassword(oldPassword, newPassword)}
+                                    >
+                                        Valider le mot de passe
+                                    </Button>
                                 </>
                             )
                         }

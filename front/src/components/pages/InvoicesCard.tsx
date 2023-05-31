@@ -12,18 +12,20 @@ export const InvoiceCard = ({invoice , index} : InvoiceCardProps ) => {
 
     const [showInvoices, setShowInvoices] = useState(false)
 
-    const checkImage = (url: string) => {
+
+    const isUrlImage = (url: string) => {
         const newImage = new Image();
         newImage.src = url;
-        newImage.onload = () => {
-            return true
-        };
-        newImage.onerror = () => {
-            return false
-        };
-        return false
+        console.log("newImage",newImage)
+        const isOk = newImage.complete && newImage.naturalHeight !== 0;
+      console.log(newImage.complete);
+      
+        
+        return isOk
+      
       };
 
+      
     return (
         <Card
             key={index}
@@ -79,6 +81,12 @@ export const InvoiceCard = ({invoice , index} : InvoiceCardProps ) => {
             {
                 showInvoices && (
                     invoice.invoicesGames.map((invoiceGame, index) => {
+                        console.log("url", invoiceGame.game.img) 
+                        console.log("isURLimg",isUrlImage(invoiceGame.game.img))  
+                        const urlImg = defaultImg
+                        console.log("--------------------");
+                        
+                        //console.log(urlImg)
                         return (
                             <Box
                                 key={index}
@@ -92,7 +100,7 @@ export const InvoiceCard = ({invoice , index} : InvoiceCardProps ) => {
                                         <ImageComp
                                             w='6rem'
                                             h='6rem'
-                                            src={checkImage(invoiceGame.game.img) ? invoiceGame.game.img : defaultImg} />
+                                            src={urlImg} />
                                         <Box
                                             display='flex'
                                             flexDirection='column'
@@ -101,7 +109,7 @@ export const InvoiceCard = ({invoice , index} : InvoiceCardProps ) => {
                                             ml='1rem'
                                         >
                                             <Text as='b'>Nom : {invoiceGame.game.name}</Text>
-                                            <Text as='b'>Prix : {invoiceGame.game.price}€ × {invoiceGame.game.quantity}</Text>
+                                            <Text as='b'>Prix : {invoiceGame.game.price}€ × {invoiceGame.quantity}</Text>
                                         </Box>
                                     </Box>
                                 </CardBody>

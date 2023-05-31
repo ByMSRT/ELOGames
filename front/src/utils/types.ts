@@ -29,6 +29,7 @@ export interface IClient {
 
 export interface IInvoiceGame {
     game: IGame,
+    quantity: number
 }
 
 export interface IGame {
@@ -36,7 +37,7 @@ export interface IGame {
     img: string,
     name: string,
     price: Float32Array,
-    quantity: number,
+    stock: number,
     maxPlayer: number,
     minPlayer: number,
     duration: string,

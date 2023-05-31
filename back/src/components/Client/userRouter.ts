@@ -106,7 +106,7 @@ userRouter.post("/login", async (req, res) => {
     }
 });
 
-userRouter.put("/update", verifyToken, async (req, res) => {
+userRouter.put("/update/password", verifyToken, async (req, res) => {
     try {
         const oldPassword = req.body.oldPassword;
         const newPassword = req.body.newPassword;

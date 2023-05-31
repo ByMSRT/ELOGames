@@ -63,7 +63,7 @@ export const getUser = async () => {
     }
 }
 
-export const updateUser = async (firstName: string, lastName: string, email:string, address: string, phone: string, password?: string) => {
+export const updateUser = async (firstName: string, lastName: string, email:string, address: string, phone: string) => {
 
     try {
         const response = await axios.put(`${BASE_URL}/profile`, {
@@ -71,8 +71,25 @@ export const updateUser = async (firstName: string, lastName: string, email:stri
             lastName,
             email,
             address,
-            phone,
-            password
+            phone
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${sessionStorage.getItem("tokenSession")}`
+            }
+        })
+        return response.data
+    }catch(err) {
+        console.log('error : ', err)
+    }
+}
+
+export const updateUserPassword = async (oldPassword: string, newPassword: string) => {
+    try {
+        const response = await axios.put(`${BASE_URL}/update/password`, {
+            oldPassword,
+            newPassword
         },
         {
             headers: {
