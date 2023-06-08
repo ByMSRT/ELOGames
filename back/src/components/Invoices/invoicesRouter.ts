@@ -202,10 +202,5 @@ invoicesRouter.get('/dataset', async (req, res) => {
                 dbColumn: 'finalPrice',
                 type: 'price',
             },
-            {
-                name: 'Client',
-                dbColumn: 'client',
-                type: 'text',
-            },
         ]);
 });

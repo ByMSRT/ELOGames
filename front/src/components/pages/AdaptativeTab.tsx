@@ -12,6 +12,8 @@ import {
   InputGroup,
   InputRightElement,
   Select,
+  useDisclosure,
+  Modal,
 } from '@chakra-ui/react';
 import CustomTd from './CustomTd';
 import { useLocation } from 'react-router-dom';
@@ -23,8 +25,10 @@ import { getDatasetGames, getGames } from '../../CRUD/game';
 import { getClients, getDatasetClients } from '../../CRUD/client';
 import { getBills, getDatasetBills } from '../../CRUD/bill';
 import { TabBuilder } from '../../utils/types';
+import AddItemModal from '../shared/AddItemModal';
 
 const AdaptativeTab = ({ type }: { type: 'clients' | 'bills' | 'games' }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const location = useLocation();
   const [search, setSearch] = useState('');
   const [data, setData] = useState<any[]>([]);
@@ -119,7 +123,7 @@ const AdaptativeTab = ({ type }: { type: 'clients' | 'bills' | 'games' }) => {
       justifyContent={'space-between'}
       p={5}
     >
-      <Box display="flex" width="xl">
+      <Box display="flex" minWidth="xl">
         <InputGroup>
           <Input value={search} onChange={(e) => setSearch(e.target.value)} />
           <InputRightElement
@@ -149,10 +153,14 @@ const AdaptativeTab = ({ type }: { type: 'clients' | 'bills' | 'games' }) => {
           <option value={20}>20</option>
           <option value={30}>30</option>
         </Select>
+        <Button onClick={onOpen}>Ajouter</Button>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <AddItemModal onClose={onClose} type={type}></AddItemModal>
+        </Modal>
       </Box>
       <Box overflowX="scroll" height="100%">
         <TableContainer>
-          <Table>
+          <Table overflowX={'initial'}>
             <Thead>
               <Tr>
                 {columns! &&

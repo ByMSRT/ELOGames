@@ -31,6 +31,26 @@ export const getClients = async () => {
         console.log(e)
     }
 }
+interface IAddClient {
+    firstName: string,
+    lastName: string,
+    email: string,
+    address?: string,
+    phone: string,
+}
+
+export const addClient = async (props: IAddClient) => {
+    try {
+        await axios.post(`${BASE_URL}/add`, props, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${sessionStorage.getItem('tokenSession')}`
+            },
+        });
+    } catch (e) {
+        console.log(e)
+    }
+}
 
 export const getDatasetClients = async () => {
     try {

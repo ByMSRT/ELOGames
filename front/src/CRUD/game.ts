@@ -16,6 +16,40 @@ export async function getGames () {
     }
 }
 
+interface IAddGame {
+    name: string,
+    price: number,
+    description: string,
+    image: string,
+    stock: number,
+    type: string,
+    maxPlayers?: number,
+    minPlayers?: number,
+    duration?: string
+}
+export const addGame = async ({ name, price, description, image, stock, type, maxPlayers, minPlayers, duration }: IAddGame) => {
+    try {
+        await axios.post(`${BASE_URL}/add`, {
+            name,
+            price,
+            description,
+            image,
+            stock,
+            type,
+            maxPlayers,
+            minPlayers,
+            duration
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${sessionStorage.getItem('tokenSession')}`
+            },
+        });
+    } catch (e) {
+        console.log(e)
+    }
+};
+
 export const getDatasetGames = async () => {
     try {
         const response = await axios.get(`${BASE_URL}/dataset`, {

@@ -1,4 +1,4 @@
-import { Badge, Button, Td } from '@chakra-ui/react';
+import { Badge, Button, Image, Td } from '@chakra-ui/react';
 import { TabBuilderType } from '../../utils/types';
 
 interface CustomTdInterface {
@@ -17,7 +17,11 @@ const CustomTd = ({ type, value }: CustomTdInterface) => {
     case 'date':
       return <Td>{value}</Td>;
     case 'image':
-      return <Td>Image</Td>;
+      return (
+        <Td>
+          <Image src={value} w={20}></Image>
+        </Td>
+      );
     case 'phone':
       return <Td>{value}</Td>;
     case 'badge':

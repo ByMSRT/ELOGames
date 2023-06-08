@@ -23,6 +23,10 @@ gameRouter.post("/add", verifyAdmin, async (req, res) => {
         const image = req.body.image;
         const stock = req.body.stock;
         const gameType = req.body.gameType || "BoardGame";
+        const maxPlayers = req.body.maxPlayers;
+        const minPlayers = req.body.minPlayers;
+        const duration = req.body.duration;
+
 
         if (!name || !price || !stock) {
             return res.status(400).json({ message: "Missing fields" });
@@ -36,6 +40,9 @@ gameRouter.post("/add", verifyAdmin, async (req, res) => {
                 img: image,
                 stock: parseInt(stock),
                 type: gameType,
+                maxPlayer: maxPlayers ? parseInt(maxPlayers) : null,
+                minPlayer: minPlayers ? parseInt(minPlayers) : null,
+                duration: duration ? duration : null,
             },
         });
         res.status(200).json(game);
@@ -107,6 +114,11 @@ gameRouter.get('/dataset', async (req, res) => {
     res.status(200).json(
         [
             {
+                name: 'Image',
+                dbColumn: 'img',
+                type: 'image',
+            },
+            {
                 name: 'Nom',
                 dbColumn: 'name',
                 type: 'text',
@@ -125,6 +137,11 @@ gameRouter.get('/dataset', async (req, res) => {
                 name: 'Joueurs max.',
                 dbColumn: 'maxPlayer',
                 type: 'text',
+            },
+            {
+                name: 'Prix',
+                dbColumn: 'price',
+                type: 'price',
             },
             {
                 name: 'Durée',
