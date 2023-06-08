@@ -5,8 +5,8 @@ import { useState } from 'react';
 import {MaterialSymbol} from 'react-material-symbols'
 import 'react-material-symbols/dist/rounded.css';
 import Navbar from '../components/shared/Navbar';
-import { login } from '../CRUD/user';
 import { useNavigate } from "react-router-dom";
+import { login } from '../CRUD/user';
 
 
 
@@ -24,21 +24,17 @@ const Login = () => {
   const navigate = useNavigate()
 
   const loginUser= async () => {
-
     if (email === '') {
       setErrorEmail(true)
     }else if (password === '') {
       setErrorPassword(true)
     }
-    
-    try {
+    else {
       await login(email, password).then(() => {
-        // navigate('/shop')
+        navigate('/shop')
+      }).catch((err) => {
+        setError(err.response.data.message)
       })
-    } catch (e) {
-      // setError(e.message)
-      console.log(e);
-      
     }
   }
 
@@ -121,6 +117,17 @@ const Login = () => {
                 </InputGroup>
                 <FormErrorMessage mb='2rem'>Le champ mot de passe est requis</FormErrorMessage>
               </FormControl>
+
+              <Box
+                mt='0rem'
+                mb='2rem'
+                display={error === '' ? 'none' : 'flex'}
+                flexDirection='column'
+                alignItems='center'
+              >
+                <Text color='red'>{error}</Text>
+              </Box>
+
 
               <Box
                 display='flex'

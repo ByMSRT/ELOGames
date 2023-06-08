@@ -23,7 +23,7 @@ export const register = async (email: string , password: string, firstName: stri
 }
 
 export const login = async (email: string, password: string) => {
-    try {
+    
         await axios.post(`${BASE_URL}/login`, {
             email,
             password
@@ -36,13 +36,8 @@ export const login = async (email: string, password: string) => {
         ).then((res) => {
             const token = res.data
             sessionStorage.setItem("tokenSession", token)
-        }
-        ).catch((err) => {
-            console.log(err);
         })
-    }catch(err) {
-        console.log('error : ', err)
-    }
+    
 }
 
 export const logout = () => {

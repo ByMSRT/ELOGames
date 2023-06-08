@@ -3,6 +3,7 @@ import Login from "../pages/Login";
 import {Profile} from "../pages/Profile";
 import Register from "../pages/Register";
 import ShopPage from '../pages/Shop';
+import BasketShop from '../pages/BasketShop'
 import { useState, useEffect } from "react"
 import { getUser } from "../CRUD/user"
 import { IProfile } from "../utils/types"
@@ -19,7 +20,7 @@ export const AppRouter = () => {
         setProfile(profile);
         return profile?.isAdmin
     }
-
+    
     return ( 
         <BrowserRouter>
             <Routes>
@@ -43,6 +44,7 @@ export const AppRouter = () => {
                 <Route path="/login" element={<Login />}></Route>
                 <Route path="/register" element={<Register />}></Route>    
                 <Route path='/shop' element={<ShopPage />} />
+                <Route path="/basket_shop" element={<BasketShop />}></Route> 
                 <Route path='/' element={<Navigate to='/shop' replace />} />
 
                 {/* If not authentificated redirect to login */}
