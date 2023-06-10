@@ -23,7 +23,7 @@ export const register = async (email: string , password: string, firstName: stri
 }
 
 export const login = async (email: string, password: string) => {
-    try {
+    
         await axios.post(`${BASE_URL}/login`, {
             email,
             password
@@ -36,15 +36,64 @@ export const login = async (email: string, password: string) => {
         ).then((res) => {
             const token = res.data
             sessionStorage.setItem("tokenSession", token)
-        }
-        ).catch((err) => {
-            console.log(err);
         })
+    
+}
+
+export const logout = () => {
+    sessionStorage.removeItem("tokenSession")
+}
+
+export const getUser = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/profile`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${sessionStorage.getItem("tokenSession")}`
+            }
+        })
+        return response.data
     }catch(err) {
         console.log('error : ', err)
     }
 }
 
-export const logout = () => {
-    sessionStorage.removeItem("tokenSession")
+export const updateUser = async (firstName: string, lastName: string, email:string, address: string, phone: string) => {
+
+    try {
+        const response = await axios.put(`${BASE_URL}/profile`, {
+            firstName,
+            lastName,
+            email,
+            address,
+            phone
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${sessionStorage.getItem("tokenSession")}`
+            }
+        })
+        return response.data
+    }catch(err) {
+        console.log('error : ', err)
+    }
+}
+
+export const updateUserPassword = async (oldPassword: string, newPassword: string) => {
+    try {
+        const response = await axios.put(`${BASE_URL}/update/password`, {
+            oldPassword,
+            newPassword
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${sessionStorage.getItem("tokenSession")}`
+            }
+        })
+        return response.data
+    }catch(err) {
+        console.log('error : ', err)
+    }
 }

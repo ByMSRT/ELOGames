@@ -1,4 +1,6 @@
-import { Box, Card, CardBody, CardFooter, Divider, Heading, Image, Text, Highlight } from '@chakra-ui/react';
+
+import { Box , Card, CardBody, CardFooter, Divider, Heading, Image, Text, Highlight } from '@chakra-ui/react';
+
 import alarm from '../../assets/alarm.svg'
 import group from '../../assets/diversity.svg'
 import shopping_cart from '../../assets/add_shopping_cart.svg'
@@ -9,21 +11,21 @@ const CardGame = () => {
 
     return (
         <Card minW='xs' bg="#F7F6FF">
-        <CardBody
-          display='flex'
-          justifyContent='center'
-        >
-          <Image
-            w='13rem'
-            h='13rem'
-            src={photo}
-          />
-        </CardBody>
-        <Divider />
-        <CardFooter 
-          h='9rem'
-          justifyContent='space-between'
-        >
+          <CardBody
+            display='flex'
+            justifyContent='center'
+          >
+            <Image
+              w='13rem'
+              h='13rem'
+              src={photo}
+            />
+          </CardBody>
+          <Divider />
+          <CardFooter 
+            h='9rem'
+            justifyContent='space-between'
+          >
           <Box>
             <Highlight query='Disponible' styles={{ px: '1', py: '1', bg: 'green', color: '#138A2D', rounded: 'full' }}>
               Disponible

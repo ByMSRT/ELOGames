@@ -3,10 +3,6 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import './index.css';
 import { createRoot } from 'react-dom/client';
 
-import { Provider } from 'react-redux'
-import store from './store/store';
-
-
 export const theme = extendTheme({
   colors: {
     purple: '#B2A4FF',

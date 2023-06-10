@@ -5,7 +5,6 @@ import { clientRouter } from "./src/components/Client/clientRouter";
 import { invoicesRouter } from "./src/components/Invoices/invoicesRouter";
 import { gameRouter } from "./src/components/Game/gameRouter";
 import cors from "cors";
-import bodyParser from "body-parser";
 
 const app = express();
 

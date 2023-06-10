@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormLabel, Heading, Image, Input, InputGroup, InputRightElement, Link, Text } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormErrorMessage, FormLabel, Heading, Image, Input, InputGroup, InputRightElement, Link, Text } from '@chakra-ui/react';
 import registerImg from '../assets/register.svg'
 import { useState } from 'react';
 import 'react-material-symbols/dist/rounded.css';
@@ -18,11 +18,35 @@ const Register = () => {
   const [email , setEmail] = useState('')
   const [password , setPassword] = useState('')
 
+  const [errorEmail , setErrorEmail] = useState(false)
+  const [errorPassword , setErrorPassword] = useState(false)
+  const [errorLastName , setErrorLastName] = useState(false)
+  const [errorFirstName , setErrorFirstName] = useState(false)
+
   const navigate = useNavigate();
 
   const registerUser = async () => {
-    register(email, password, firstName, lastName),
-    navigate('/login')
+    if (lastName === '' && firstName === '' && email === '' && password === ''){
+      setErrorLastName(true)
+      setErrorFirstName(true)
+      setErrorEmail(true)
+      setErrorPassword(true)
+    } else {
+      if (lastName === '') {
+        setErrorLastName(true)
+      }else if (firstName === '') {
+        setErrorFirstName(true)
+      }else if (email === '') {
+        setErrorEmail(true)
+      }else if (password === '') {
+        setErrorPassword(true)
+      }
+      else {
+        register(email, password, firstName, lastName),
+        
+        navigate('/login')
+      }
+    }
   }
 
   
@@ -72,17 +96,9 @@ const Register = () => {
 
             <Text>Vous avez déjà un compte ? <Link color='yellow' href='/login'>Connectez-vous !</Link> </Text>
 
-            <FormControl variant="floating" mt='1rem' isRequired >
-              <FormLabel>Nom</FormLabel>
-              <Input 
-                  placeholder='Votre Nom' 
-                  background='white'
-                  mb='0.5rem'
-                  onChange={(e) => setLastName(e.target.value)}
-                  value={lastName}
-                />
-            </FormControl>
-            <FormControl variant="floating"  isRequired >
+            
+
+            <FormControl variant="floating" mt='1rem' isRequired isInvalid={errorFirstName}>
               <FormLabel>Prénom</FormLabel>
               <Input 
                   placeholder='Votre Prénom' 
@@ -91,8 +107,24 @@ const Register = () => {
                   onChange={(e) => setFirstName(e.target.value)}
                   value={firstName}
                 />
+              <FormErrorMessage mt='0rem'>Le champ prénom est requis</FormErrorMessage>
+
             </FormControl>
-            <FormControl variant="floating"  isRequired >
+
+            <FormControl variant="floating"  isRequired isInvalid={errorLastName}>
+              <FormLabel>Nom</FormLabel>
+              <Input 
+                  placeholder='Votre Nom' 
+                  background='white'
+                  mb='0.5rem'
+                  onChange={(e) => setLastName(e.target.value)}
+                  value={lastName}
+                />
+              <FormErrorMessage mt='0rem'>Le champ nom est requis</FormErrorMessage>
+
+            </FormControl>
+
+            <FormControl variant="floating"  isRequired  isInvalid={errorEmail}>
               <FormLabel>Email</FormLabel>
               <Input 
                   placeholder='Votre Email' 
@@ -101,8 +133,11 @@ const Register = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   value={email}
                 />
+              <FormErrorMessage mt='0rem'>Le champ email est requis</FormErrorMessage>
+
             </FormControl>
-            <FormControl variant="floating"  isRequired >
+
+            <FormControl variant="floating"  isRequired  isInvalid={errorPassword}>
               <FormLabel>Mot de passe</FormLabel>
               <InputGroup size="md">
                 <Input 
@@ -119,6 +154,7 @@ const Register = () => {
                     </Button>
                   </InputRightElement>
               </InputGroup>
+              <FormErrorMessage mt='0rem'>Le champ mot de passe est requis</FormErrorMessage>
             </FormControl>
           
           <Box

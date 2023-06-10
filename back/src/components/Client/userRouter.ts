@@ -21,6 +21,9 @@ userRouter.post("/register", async (req, res) => {
             },
         });
 
+        // console.log(userExist);
+        
+
         if (userExist) {
             res.status(409).json({ message: "User already exist" });
         }
@@ -55,7 +58,7 @@ userRouter.post("/register", async (req, res) => {
                 token: token,
             },
         });
-        res.status(201).json(update);
+        res.status(201).json(token);
     } catch {
         res.status(500).json({ message: "Something went wrong" });
     }
@@ -71,12 +74,12 @@ userRouter.post("/login", async (req, res) => {
             },
         });
 
-        if (!client) {
+        if (client?.email !== email) {
             res.status(401).json({ message: "User does not exist" });
         }
-
         if (client?.password === null) {
             res.status(401).json({ message: "User does not exist" });
+            
         } else {
             if (client && (await bcrypt.compare(password, client.password))) {
                 const token = jwt.sign(
@@ -98,7 +101,7 @@ userRouter.post("/login", async (req, res) => {
                 });
                 res.status(200).json(token);
             } else {
-                res.status(401).json({ message: "Wrong password" });
+                res.status(401).json({ message: "Mauvais mot de passe" });
             }
         }
     } catch {
@@ -106,7 +109,7 @@ userRouter.post("/login", async (req, res) => {
     }
 });
 
-userRouter.put("/update", verifyToken, async (req, res) => {
+userRouter.put("/update/password", verifyToken, async (req, res) => {
     try {
         const oldPassword = req.body.oldPassword;
         const newPassword = req.body.newPassword;
@@ -135,7 +138,7 @@ userRouter.put("/update", verifyToken, async (req, res) => {
 
                 res.status(200).json(update);
             } else {
-                res.status(401).json({ message: "Wrong password" });
+                res.status(401).json({ message: "Mauvais mot de passe" });
             }
         }
     } catch {

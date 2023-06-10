@@ -1,15 +1,14 @@
-import { useCookies } from "react-cookie";
 import { Box, Button, Grid, Input, InputGroup, InputRightElement, Select } from '@chakra-ui/react';
 import NavbarShop from '../components/shared/NavbarShop';
 import CardGame from '../components/pages/CardGame';
 import { MaterialSymbol } from 'react-material-symbols';
 
 const Shop = () => {
+
     return (
         <Box display="flex" alignItems="center" flexDirection="column">
             <NavbarShop />
             <Box mt="1rem" w="40rem">
-                {/* <Input placeholder='Rechercher...' /> */}
                 <InputGroup size="md">
                     <Input placeholder="Rechercher..." />
                     <InputRightElement width="4.5rem">
