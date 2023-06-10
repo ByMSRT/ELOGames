@@ -1,24 +1,4 @@
-import { 
-    Box , 
-    Card, 
-    CardBody, 
-    Heading, 
-    Grid, 
-    Button, 
-    Link, 
-    Text, 
-    Divider, 
-    Input,   
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalCloseButton,
-    useDisclosure,
-    Spinner,
-    Image
-} from '@chakra-ui/react';
+import { Box, Card, CardBody, Heading, Grid, Button, Link, Text, Divider, Input, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, useDisclosure, Spinner, Image} from '@chakra-ui/react';
 import NavbarShop from "../components/shared/NavbarShop"
 import CardBasketShop from "../components/pages/CardBasketShop"
 import { useState } from 'react';
@@ -31,6 +11,9 @@ const BasketShop = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [isShow, setIsShow] = useState(false)
     const [showImage, setShowImage] = useState(false)
+
+    const [shippingAdress, setShippingAdress] = useState('')
+    const [billingAdress, setBillingAdress] = useState('')
 
     const handleClick = () => {
         setIsShow(!isShow)
@@ -154,15 +137,20 @@ const BasketShop = () => {
                                                     placeholder='Votre addresse de livraison' 
                                                     background='white'
                                                     mb={'1rem'}
+                                                    onChange={(e) => setShippingAdress(e.target.value)}
+                                                    value={shippingAdress}
                                                 />
                                                 <Input 
                                                     placeholder='Votre addresse de facturation' 
                                                     background='white'
+                                                    onChange={(e) => setBillingAdress(e.target.value)}
+                                                    value={billingAdress}
                                                 />
                                                 <Button
                                                     mt='1rem'
                                                     background={'green'}
                                                     onClick={()=> openModal()}
+                                                    isDisabled={shippingAdress === '' || billingAdress === ''}
                                                 >
                                                     Valider
                                                 </Button>

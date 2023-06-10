@@ -13,52 +13,52 @@ const prisma = new PrismaClient();
 
 userRouter.post("/register", async (req, res) => {
     try {
-        const { email, password, firstName, lastName, isAdmin } = req.body;
+        const { email, password, firstName, lastName } = req.body;
 
         const userExist = await prisma.client.findUnique({
             where: {
                 email: email,
             },
         });
-
-        // console.log(userExist);
         
-
-        if (userExist) {
-            res.status(409).json({ message: "User already exist" });
-        }
-
         const hash = await bcrypt.hash(password, 10);
 
-        const client = await prisma.client.create({
-            data: {
-                email: email,
-                password: hash,
-                firstName: firstName,
-                lastName: lastName,
-                isAdmin: isAdmin,
-            },
-        });
-
-        const token = jwt.sign(
-            {
-                email: client.email,
-            },
-            process.env.JWT_ACCESS_SECRET as string,
-            {
-                expiresIn: "1h",
-            }
-        );
-
-        const update = await prisma.client.update({
-            where: {
-                email: client.email,
-            },
-            data: {
-                token: token,
-            },
-        });
-        res.status(201).json(token);
+        
+        if (userExist) {
+            res.status(409).json({ message: "Un utilisateur avec ce mail existe déjà" });
+        }else {
+            console.log(userExist);
+            
+            const client = await prisma.client.create({
+                data: {
+                    email: email,
+                    password: hash,
+                    firstName: firstName,
+                    lastName: lastName,
+                    isAdmin: false,
+                },
+            });
+    
+            const token = jwt.sign(
+                {
+                    email: client.email,
+                },
+                process.env.JWT_ACCESS_SECRET as string,
+                {
+                    expiresIn: "1h",
+                }
+            );
+    
+            const update = await prisma.client.update({
+                where: {
+                    email: client.email,
+                },
+                data: {
+                    token: token,
+                },
+            });
+            res.status(201).json(token);
+        }
     } catch {
         res.status(500).json({ message: "Something went wrong" });
     }
@@ -67,7 +67,7 @@ userRouter.post("/register", async (req, res) => {
 userRouter.post("/login", async (req, res) => {
     try {
         const { email, password } = req.body;
-
+        
         const client = await prisma.client.findUnique({
             where: {
                 email: email,
@@ -75,13 +75,9 @@ userRouter.post("/login", async (req, res) => {
         });
 
         if (client?.email !== email) {
-            res.status(401).json({ message: "User does not exist" });
-        }
-        if (client?.password === null) {
-            res.status(401).json({ message: "User does not exist" });
-            
+            res.status(401).json({ message: "Cet utilisateur n'existe pas" });
         } else {
-            if (client && (await bcrypt.compare(password, client.password))) {
+            if (client && (await bcrypt.compare(password, client.password!))) {
                 const token = jwt.sign(
                     {
                         email: client.email,
@@ -91,7 +87,7 @@ userRouter.post("/login", async (req, res) => {
                         expiresIn: "2h",
                     }
                 );
-                const update = await prisma.client.update({
+                await prisma.client.update({
                     where: {
                         email: client.email,
                     },
@@ -100,7 +96,7 @@ userRouter.post("/login", async (req, res) => {
                     },
                 });
                 res.status(200).json(token);
-            } else {
+            }else {
                 res.status(401).json({ message: "Mauvais mot de passe" });
             }
         }
