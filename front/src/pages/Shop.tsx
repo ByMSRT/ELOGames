@@ -1,13 +1,37 @@
 import { useCookies } from "react-cookie";
-import { Box, Button, Grid, Input, InputGroup, InputRightElement, Select } from '@chakra-ui/react';
-import NavbarShop from '../components/shared/NavbarShop';
-import CardGame from '../components/pages/CardGame';
-import { MaterialSymbol } from 'react-material-symbols';
+import {
+    Box,
+    Button,
+    Grid,
+    Input,
+    InputGroup,
+    InputRightElement,
+    Select,
+} from "@chakra-ui/react";
+import NavbarShop from "../components/shared/NavbarShop";
+import CardGame from "../components/pages/CardGame";
+import { MaterialSymbol } from "react-material-symbols";
+import { sendCookie } from "../CRUD/user";
 
 const Shop = () => {
+    const [cookies, setCookie] = useCookies(["cart"]);
+
+    const tab = [
+        {
+            id: 1,
+            name: "Game 1",
+        },
+    ];
+
+    const handleClick = () => {
+        setCookie("cart", tab, { path: "/" });
+        console.log(cookies);
+        sendCookie();
+    };
     return (
         <Box display="flex" alignItems="center" flexDirection="column">
             <NavbarShop />
+            <Button onClick={handleClick}>Set cookies</Button>
             <Box mt="1rem" w="40rem">
                 {/* <Input placeholder='Rechercher...' /> */}
                 <InputGroup size="md">
