@@ -48,8 +48,6 @@ const Register = () => {
         await register(email, password, firstName, lastName).then(() => {
           login(email, password).then(() => {
             navigate('/shop')
-          }).catch((err) => {
-            setError(err.response.data.message)
           })
         }).catch((err) => {
           setError(err.response.data.message)

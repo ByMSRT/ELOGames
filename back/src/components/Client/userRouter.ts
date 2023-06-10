@@ -27,7 +27,6 @@ userRouter.post("/register", async (req, res) => {
         if (userExist) {
             res.status(409).json({ message: "Un utilisateur avec ce mail existe déjà" });
         }else {
-            console.log(userExist);
             
             const client = await prisma.client.create({
                 data: {
