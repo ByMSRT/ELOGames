@@ -23,6 +23,10 @@ gameRouter.post("/add", verifyAdmin, async (req, res) => {
         const image = req.body.image;
         const stock = req.body.stock;
         const gameType = req.body.gameType || "BoardGame";
+        const maxPlayers = req.body.maxPlayers;
+        const minPlayers = req.body.minPlayers;
+        const duration = req.body.duration;
+
 
         if (!name || !price || !stock) {
             return res.status(400).json({ message: "Missing fields" });
@@ -36,12 +40,74 @@ gameRouter.post("/add", verifyAdmin, async (req, res) => {
                 img: image,
                 stock: parseInt(stock),
                 type: gameType,
+                maxPlayer: maxPlayers ? parseInt(maxPlayers) : null,
+                minPlayer: minPlayers ? parseInt(minPlayers) : null,
+                duration: duration ? duration : null,
             },
         });
         res.status(200).json(game);
     } catch {
         res.status(500).json({ message: "Something went wrong" });
     }
+});
+
+
+gameRouter.get('/dataset', async (req, res) => {
+    try {
+        console.log('dataset');
+        const result = [
+            {
+                name: 'Image',
+                dbColumn: 'img',
+                type: 'image',
+            },
+            {
+                name: 'Nom',
+                dbColumn: 'name',
+                type: 'text',
+            },
+            {
+                name: 'Description',
+                dbColumn: 'description',
+                type: 'text',
+            },
+            {
+                name: 'Joueurs min.',
+                dbColumn: 'minPlayer',
+                type: 'text',
+            },
+            {
+                name: 'Joueurs max.',
+                dbColumn: 'maxPlayer',
+                type: 'text',
+            },
+            {
+                name: 'Prix',
+                dbColumn: 'price',
+                type: 'price',
+            },
+            {
+                name: 'Durée',
+                dbColumn: 'duration',
+                type: 'text',
+            },
+            {
+                name: 'Type',
+                dbColumn: 'type',
+                type: 'text',
+            },
+            {
+                name: 'Stock',
+                dbColumn: 'stock',
+                type: 'text',
+            },
+        ]
+        res.status(200).json(result);
+    }
+    catch (e) {
+        res.status(500).json({ message: "Something went wrong" });
+    }
+
 });
 
 gameRouter.delete("/delete/:id", verifyAdmin, async (req, res) => {
@@ -54,6 +120,20 @@ gameRouter.delete("/delete/:id", verifyAdmin, async (req, res) => {
             },
         });
         res.status(200).json({ message: "Game deleted" });
+    } catch {
+        res.status(500).json({ message: "Something went wrong" });
+    }
+});
+
+gameRouter.get("/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const game = await prisma.game.findUnique({
+            where: {
+                id: id,
+            },
+        });
+        res.status(200).json(game);
     } catch {
         res.status(500).json({ message: "Something went wrong" });
     }
@@ -101,3 +181,4 @@ gameRouter.put("/update/:id", verifyAdmin, async (req, res) => {
         res.status(500).json({ message: "Something went wrong" });
     }
 });
+

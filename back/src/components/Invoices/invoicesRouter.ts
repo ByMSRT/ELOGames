@@ -25,6 +25,61 @@ invoicesRouter.get("/all", verifyAdmin, async (req, res) => {
     }
 });
 
+invoicesRouter.get('/dataset', async (req, res) => {
+    console.log('dataset');
+    try {
+        console.log('dataset');
+        const result = [
+            {
+                name: 'Date de création',
+                dbColumn: 'createdAt',
+                type: 'date',
+            },
+            {
+                name: 'Date de Payement',
+                dbColumn: 'paidAt',
+                type: 'text',
+            },
+            {
+                name: 'Payé',
+                dbColumn: 'isPaid',
+                type: 'text',
+            },
+            {
+                name: 'Prix',
+                dbColumn: 'finalPrice',
+                type: 'price',
+            },
+        ];
+        res.status(200).json(result);
+    }
+    catch (e) {
+        res.status(500).json({ message: "Something went wrong" });
+    }
+});
+
+
+invoicesRouter.get("/:id", verifyAdmin, async (req, res) => {
+    try {
+        const invoice = await prisma.invoice.findFirst({
+            where: {
+                id: req.params.id,
+            },
+            include: {
+                client: true,
+                invoicesGames: {
+                    include: {
+                        game: true,
+                    },
+                },
+            },
+        });
+        res.status(200).json(invoice);
+    } catch {
+        res.status(500).json({ message: "Something went wrong" });
+    }
+});
+
 invoicesRouter.post("/add", async (req, res) => {
     try {
         const paid = req.body.paid || false;
