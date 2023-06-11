@@ -3,9 +3,10 @@ import registerImg from '../assets/register.svg'
 import { useState } from 'react';
 import 'react-material-symbols/dist/rounded.css';
 import Navbar from '../components/shared/Navbar';
-import { register }  from '../CRUD/user';
+import { register, login }  from '../CRUD/user';
 import { useNavigate } from "react-router-dom";
 import { MaterialSymbol } from 'react-material-symbols';
+
 
 
 const Register = () => {
@@ -22,6 +23,8 @@ const Register = () => {
   const [errorPassword , setErrorPassword] = useState(false)
   const [errorLastName , setErrorLastName] = useState(false)
   const [errorFirstName , setErrorFirstName] = useState(false)
+  const [error , setError] = useState('')
+
 
   const navigate = useNavigate();
 
@@ -42,9 +45,13 @@ const Register = () => {
         setErrorPassword(true)
       }
       else {
-        register(email, password, firstName, lastName),
-        
-        navigate('/login')
+        await register(email, password, firstName, lastName).then(() => {
+          login(email, password).then(() => {
+            navigate('/shop')
+          })
+        }).catch((err) => {
+          setError(err.response.data.message)
+        })
       }
     }
   }
@@ -156,6 +163,16 @@ const Register = () => {
               </InputGroup>
               <FormErrorMessage mt='0rem'>Le champ mot de passe est requis</FormErrorMessage>
             </FormControl>
+
+          <Box
+              mt='0rem'
+              mb='2rem'
+              display={error === '' ? 'none' : 'flex'}
+              flexDirection='column'
+              alignItems='center'
+            >
+              <Text color='red'>{error}</Text>
+            </Box>
           
           <Box
             display='flex'
