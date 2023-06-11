@@ -16,10 +16,10 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { addGame } from '../../CRUD/game';
+import { addGame, editGame, getGameById } from '../../CRUD/game';
 import { useNavigate, useNavigation } from 'react-router-dom';
 
-const FormGame = ({ onClose }: { onClose: Function }) => {
+const FormGame = ({ onClose, id }: { onClose: Function; id?: string }) => {
   const [name, setName] = useState('');
   const [isErrorName, setIsErrorName] = useState(false);
   const [price, setPrice] = useState('0.00');
@@ -36,6 +36,25 @@ const FormGame = ({ onClose }: { onClose: Function }) => {
   const [isErrorType, setIsErrorType] = useState(false);
   const [isErrorForm] = useState(false);
   const [isErrorImage, setIsErrorImage] = useState(false);
+
+  const editGameFound = async () => {
+    const res = await getGameById(id!);
+
+    setName(res.name || '');
+    setPrice(res.price || '0.00');
+    setDescription(res.description || '');
+    setImage(res.image || '');
+    setStock(res.stock || 0);
+    setMaxPlayers(res.maxPlayer || undefined);
+    setMinPlayers(res.minPlayer || undefined);
+    setDuration(res.duration || undefined);
+    setType(res.type || '');
+  };
+  useEffect(() => {
+    if (id) {
+      editGameFound();
+    }
+  }, [id]);
 
   const checkImage = async (url: string) => {
     const newImage = new Image();
@@ -80,7 +99,7 @@ const FormGame = ({ onClose }: { onClose: Function }) => {
     if (error || isErrorImage) {
       return;
     } else {
-      await addGame({
+      const dataToUpload = {
         name,
         price: parseFloat(price),
         description,
@@ -90,12 +109,16 @@ const FormGame = ({ onClose }: { onClose: Function }) => {
         maxPlayers,
         minPlayers,
         duration,
-      }).then((res) => {
-        console.log(res);
-        onClose();
-        navigate(0);
-        // window.location.reload();
-      });
+      };
+      id
+        ? await editGame(dataToUpload, id).then((res) => {
+            onClose();
+            navigate(0);
+          })
+        : await addGame(dataToUpload).then((res) => {
+            onClose();
+            navigate(0);
+          });
     }
   };
 

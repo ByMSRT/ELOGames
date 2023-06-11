@@ -51,6 +51,65 @@ gameRouter.post("/add", verifyAdmin, async (req, res) => {
     }
 });
 
+
+gameRouter.get('/dataset', async (req, res) => {
+    try {
+        console.log('dataset');
+        const result = [
+            {
+                name: 'Image',
+                dbColumn: 'img',
+                type: 'image',
+            },
+            {
+                name: 'Nom',
+                dbColumn: 'name',
+                type: 'text',
+            },
+            {
+                name: 'Description',
+                dbColumn: 'description',
+                type: 'text',
+            },
+            {
+                name: 'Joueurs min.',
+                dbColumn: 'minPlayer',
+                type: 'text',
+            },
+            {
+                name: 'Joueurs max.',
+                dbColumn: 'maxPlayer',
+                type: 'text',
+            },
+            {
+                name: 'Prix',
+                dbColumn: 'price',
+                type: 'price',
+            },
+            {
+                name: 'Durée',
+                dbColumn: 'duration',
+                type: 'text',
+            },
+            {
+                name: 'Type',
+                dbColumn: 'type',
+                type: 'text',
+            },
+            {
+                name: 'Stock',
+                dbColumn: 'stock',
+                type: 'text',
+            },
+        ]
+        res.status(200).json(result);
+    }
+    catch (e) {
+        res.status(500).json({ message: "Something went wrong" });
+    }
+
+});
+
 gameRouter.delete("/delete/:id", verifyAdmin, async (req, res) => {
     try {
         const id = req.params.id;
@@ -61,6 +120,20 @@ gameRouter.delete("/delete/:id", verifyAdmin, async (req, res) => {
             },
         });
         res.status(200).json({ message: "Game deleted" });
+    } catch {
+        res.status(500).json({ message: "Something went wrong" });
+    }
+});
+
+gameRouter.get("/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const game = await prisma.game.findUnique({
+            where: {
+                id: id,
+            },
+        });
+        res.status(200).json(game);
     } catch {
         res.status(500).json({ message: "Something went wrong" });
     }
@@ -109,54 +182,3 @@ gameRouter.put("/update/:id", verifyAdmin, async (req, res) => {
     }
 });
 
-
-gameRouter.get('/dataset', async (req, res) => {
-    res.status(200).json(
-        [
-            {
-                name: 'Image',
-                dbColumn: 'img',
-                type: 'image',
-            },
-            {
-                name: 'Nom',
-                dbColumn: 'name',
-                type: 'text',
-            },
-            {
-                name: 'Description',
-                dbColumn: 'description',
-                type: 'text',
-            },
-            {
-                name: 'Joueurs min.',
-                dbColumn: 'minPlayer',
-                type: 'text',
-            },
-            {
-                name: 'Joueurs max.',
-                dbColumn: 'maxPlayer',
-                type: 'text',
-            },
-            {
-                name: 'Prix',
-                dbColumn: 'price',
-                type: 'price',
-            },
-            {
-                name: 'Durée',
-                dbColumn: 'duration',
-                type: 'text',
-            },
-            {
-                name: 'Type',
-                dbColumn: 'type',
-                type: 'text',
-            },
-            {
-                name: 'Stock',
-                dbColumn: 'stock',
-                type: 'text',
-            },
-        ]);
-});

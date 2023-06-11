@@ -14,13 +14,13 @@ import { useState } from 'react';
 
 interface AddItemModalInterface {
   onClose: Function;
-  type: 'clients' | 'bills' | 'games';
+  type: 'clients' | 'invoices' | 'games';
+  id?: string;
 }
 
-const AddItemModal = ({ onClose, type }: AddItemModalInterface) => {
-  const [isClicked, setIsClicked] = useState(false);
+const AddItemModal = ({ onClose, type, id }: AddItemModalInterface) => {
   const title =
-    type === 'clients' ? 'Client' : type === 'bills' ? 'Facture' : 'Jeu';
+    type === 'clients' ? 'Client' : type === 'invoices' ? 'Facture' : 'Jeu';
   console.log(type);
   return (
     <>
@@ -29,11 +29,11 @@ const AddItemModal = ({ onClose, type }: AddItemModalInterface) => {
         <ModalHeader>Ajouter un {title}</ModalHeader>
         <ModalCloseButton />
         {type === 'clients' ? (
-          <FormClient onClose={onClose}></FormClient>
-        ) : type === 'bills' ? (
-          <FormInvoice onClose={onClose}></FormInvoice>
+          <FormClient onClose={onClose} id={id}></FormClient>
+        ) : type === 'invoices' ? (
+          <FormInvoice onClose={onClose} id={id}></FormInvoice>
         ) : (
-          <FormGame onClose={onClose}></FormGame>
+          <FormGame onClose={onClose} id={id}></FormGame>
         )}
       </ModalContent>
     </>

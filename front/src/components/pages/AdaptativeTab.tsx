@@ -23,11 +23,15 @@ import Pagination from '../shared/Pagination';
 import CustomTh from './CustomTh';
 import { getDatasetGames, getGames } from '../../CRUD/game';
 import { getClients, getDatasetClients } from '../../CRUD/client';
-import { getBills, getDatasetBills } from '../../CRUD/bill';
+import { getInvoices, getDatasetInvoices } from '../../CRUD/invoice';
 import { TabBuilder } from '../../utils/types';
 import AddItemModal from '../shared/AddItemModal';
 
-const AdaptativeTab = ({ type }: { type: 'clients' | 'bills' | 'games' }) => {
+const AdaptativeTab = ({
+  type,
+}: {
+  type: 'clients' | 'invoices' | 'games';
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const location = useLocation();
   const [search, setSearch] = useState('');
@@ -61,20 +65,20 @@ const AdaptativeTab = ({ type }: { type: 'clients' | 'bills' | 'games' }) => {
     setFilteredData(clients);
   };
 
-  const getBillsAsync = async () => {
-    const bills = await getBills();
-    const datasetBills = await getDatasetBills();
-    setColumns(datasetBills);
-    setData(bills);
-    setFilteredData(bills);
+  const getInvoicesAsync = async () => {
+    const invoices = await getInvoices();
+    const datasetInvoices = await getDatasetInvoices();
+    setColumns(datasetInvoices);
+    setData(invoices);
+    setFilteredData(invoices);
   };
   useEffect(() => {
     switch (typeUrl) {
       case 'clients':
         getClientsAsync();
         break;
-      case 'bills':
-        getBillsAsync();
+      case 'invoices':
+        getInvoicesAsync();
         break;
       case 'games':
         getGamesAsync();
@@ -194,9 +198,10 @@ const AdaptativeTab = ({ type }: { type: 'clients' | 'bills' | 'games' }) => {
                             ></CustomTd>
                           );
                         })}
-                      <Td>
-                        <Button>Éditer</Button>
-                      </Td>
+                      <CustomTd
+                        type={'edit'}
+                        value={{ id: item.id, type }}
+                      ></CustomTd>
                     </Tr>
                   );
                 })}

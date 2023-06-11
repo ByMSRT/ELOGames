@@ -14,7 +14,6 @@ const CustomTh = ({ columnName, columnDb, onClickFunction }: CustomThProps) => {
       onClick={() => {
         const newSortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
         setSortDirection(newSortDirection);
-        console.log(columnDb, newSortDirection);
         onClickFunction(columnDb, newSortDirection);
       }}
     >

@@ -38,8 +38,8 @@ export const AppRouter = () => {
                   element={<AdaptativeTab type="clients" />}
                 ></Route>
                 <Route
-                  path="bills"
-                  element={<AdaptativeTab type="bills" />}
+                  path="invoices"
+                  element={<AdaptativeTab type="invoices" />}
                 ></Route>
                 <Route
                   path="games"

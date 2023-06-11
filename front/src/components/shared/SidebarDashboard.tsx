@@ -22,7 +22,7 @@ const SidebarDashboard = () => {
           ></LinkSidebar>
           <LinkSidebar
             iconName="receipt_long"
-            link="bills"
+            link="invoices"
             text="Factures"
           ></LinkSidebar>
           <LinkSidebar

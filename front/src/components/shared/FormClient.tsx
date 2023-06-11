@@ -7,11 +7,11 @@ import {
   ModalBody,
   ModalFooter,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { addClient } from '../../CRUD/client';
+import { addClient, getClientById, updateClient } from '../../CRUD/client';
 
-const FormClient = ({ onClose }: { onClose: Function }) => {
+const FormClient = ({ onClose, id }: { onClose: Function; id?: string }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -21,6 +21,19 @@ const FormClient = ({ onClose }: { onClose: Function }) => {
   const navigate = useNavigate();
   const [isErrorForm] = useState(false);
 
+  const editClientFound = async () => {
+    const res = await getClientById(id!);
+    setFirstName(res.firstName || '');
+    setLastName(res.lastName || '');
+    setEmail(res.email || '');
+    setAddress(res.address || '');
+    setPhone(res.phone || '');
+  };
+  useEffect(() => {
+    if (id) {
+      editClientFound();
+    }
+  }, [id]);
   const createClient = async () => {
     let error = false;
 
@@ -33,18 +46,22 @@ const FormClient = ({ onClose }: { onClose: Function }) => {
     if (error) {
       return;
     } else {
-      await addClient({
+      const dataToReturn = {
         firstName,
         lastName,
         email,
         address,
         phone,
-      }).then((res) => {
-        console.log(res);
-        onClose();
-        navigate(0);
-        // window.location.reload();
-      });
+      };
+      id
+        ? await updateClient(dataToReturn, id!).then((res) => {
+            onClose();
+            navigate(0);
+          })
+        : await addClient(dataToReturn).then((res) => {
+            onClose();
+            navigate(0);
+          });
     }
   };
 

@@ -87,7 +87,20 @@ clientRouter.delete("/delete/:id", async (req, res) => {
         res.status(500).json({ message: "Something went wrong" });
     }
 });
+clientRouter.get("/:id", verifyAdmin, async (req, res) => {
+    try {
+        const id = req.params.id;
+        const client = await prisma.client.findFirstOrThrow({
+            where: {
+                id: id,
+            },
+        });
 
+        res.status(200).json(client);
+    } catch {
+        res.status(500).json({ message: "Something went wrong" });
+    }
+});
 clientRouter.put("/update/:id", async (req, res) => {
     try {
         const id = req.params.id;
@@ -104,7 +117,7 @@ clientRouter.put("/update/:id", async (req, res) => {
         const address = req.body.address || getClient.address;
         const phone = req.body.phone || getClient.phone;
 
-        if (!firstName || !lastName || !email || !address || !phone) {
+        if (!firstName || !lastName || !email) {
             return res.status(400).json({ message: "Missing fields" });
         }
 

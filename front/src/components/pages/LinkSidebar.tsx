@@ -11,7 +11,7 @@ interface LinkSidebarProps {
     | 'extension'
     | 'logout';
   text: 'Dashboard' | 'Factures' | 'Clients' | 'Jeux' | 'Déconnexion';
-  link: '' | 'bills' | 'clients' | 'games' | 'logout';
+  link: '' | 'invoices' | 'clients' | 'games' | 'logout';
 }
 
 const LinkSidebar = ({ iconName, text, link }: LinkSidebarProps) => {

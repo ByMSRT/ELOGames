@@ -1,5 +1,13 @@
-import { Badge, Button, Image, Td } from '@chakra-ui/react';
+import {
+  Badge,
+  Button,
+  Image,
+  Modal,
+  Td,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { TabBuilderType } from '../../utils/types';
+import AddItemModal from '../shared/AddItemModal';
 
 interface CustomTdInterface {
   type: TabBuilderType['type'];
@@ -7,6 +15,11 @@ interface CustomTdInterface {
 }
 
 const CustomTd = ({ type, value }: CustomTdInterface) => {
+  const {
+    isOpen: isOpenEdit,
+    onOpen: onOpenEdit,
+    onClose: onCloseEdit,
+  } = useDisclosure();
   switch (type) {
     case 'text':
       return <Td>{value}</Td>;
@@ -28,6 +41,20 @@ const CustomTd = ({ type, value }: CustomTdInterface) => {
       return (
         <Td>
           <Badge colorScheme={value.badgeColor}>{value.text}</Badge>
+        </Td>
+      );
+    case 'edit':
+      return (
+        <Td>
+          <Button onClick={onOpenEdit}>Éditer</Button>
+          <Modal isOpen={isOpenEdit} onClose={onCloseEdit}>
+            <AddItemModal
+              key={value.id}
+              onClose={onCloseEdit}
+              type={value.type}
+              id={value.id}
+            ></AddItemModal>
+          </Modal>
         </Td>
       );
     default:

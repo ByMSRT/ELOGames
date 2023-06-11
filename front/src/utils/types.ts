@@ -43,7 +43,7 @@ export interface IGame {
     description: string,
 }
 export type TabBuilderType = {
-    type: 'text' | 'number' | 'price' | 'date' | 'image' | 'phone' | 'badge'
+    type: 'text' | 'number' | 'price' | 'date' | 'image' | 'phone' | 'badge' | 'edit'
 }
 
 export interface TabBuilder {
@@ -52,3 +52,25 @@ export interface TabBuilder {
     type: TabBuilderType["type"],
 }
 
+export interface IClient {
+    address: string,
+    createdAt: Date,
+    email: string,
+    firstName: string,
+    id: string,
+    isAdmin: boolean,
+    lastName: string,
+    phone: string,
+}
+export interface IGame {
+    description: string,
+    duration: Date,
+    id: string,
+    img: string,
+    maxPlayer: number,
+    minPlayer: number,
+    name: string,
+    price: number
+    stock: number,
+    type: string,
+}
