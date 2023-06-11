@@ -6,7 +6,7 @@ import { createRoot } from 'react-dom/client';
 export const theme = extendTheme({
   colors: {
     purple: '#B2A4FF',
-    yellow: '#FFC984', 
+    yellow: '#FFC984',
     pink: '#FFA1A1',
     green: '#A4FFCE',
     black: '#454545',
