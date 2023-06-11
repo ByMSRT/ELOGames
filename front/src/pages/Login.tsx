@@ -5,8 +5,10 @@ import { useState } from 'react';
 import {MaterialSymbol} from 'react-material-symbols'
 import 'react-material-symbols/dist/rounded.css';
 import Navbar from '../components/shared/Navbar';
+import jwt_decode from "jwt-decode";
 import { login } from '../CRUD/user';
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from '@react-oauth/google'
 
 
 const Login = () => {
@@ -16,6 +18,7 @@ const Login = () => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [googleUser, setGoogleUser] = useState('')
 
   const navigate = useNavigate()
 
@@ -23,6 +26,7 @@ const Login = () => {
     login(email, password)
     navigate('/shop')
   }
+
 
   return (
     <Box
@@ -127,7 +131,7 @@ const Login = () => {
                 OU
               </Text>
               
-              <Button 
+              {/* <Button 
                 background='white' 
                 fontWeight="light" 
                 w='15rem' 
@@ -135,7 +139,23 @@ const Login = () => {
               >
                 <Image src={googleImage} mr='1rem' />
                 Se connecter avec Google
-              </Button>
+              </Button> */}
+
+              {/* Problem de connection google -> Failed to resolve import "@react-oauth/google"
+              Il y a une nouvelle version de google OAuth et pose des problèmes au code.
+              J'ai fais ce que j'ai pu.
+              */}
+              <GoogleLogin
+                onSuccess={credentialResponse => {
+                  console.log(credentialResponse);
+                  const userObject = jwt_decode(credentialResponse.credential);
+                  setGoogleUser(userObject);
+                }}
+              
+                onError={() => {
+                  console.log('Login Failed');
+                }}
+              />
             </Box>
           </Box>
         </Box>

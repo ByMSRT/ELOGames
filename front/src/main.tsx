@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client';
 
 import { Provider } from 'react-redux'
 import store from './store/store';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 
 export const theme = extendTheme({
@@ -26,7 +27,9 @@ export const theme = extendTheme({
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
-  <ChakraProvider theme={theme}>
-    <App />
-  </ChakraProvider>
+  <GoogleOAuthProvider clientId="50788188194-86blku10sb91mvg00vpe8kihbs7e0nkp.apps.googleusercontent.com">
+    <ChakraProvider theme={theme}>
+        <App />
+    </ChakraProvider>
+  </GoogleOAuthProvider>
 );
