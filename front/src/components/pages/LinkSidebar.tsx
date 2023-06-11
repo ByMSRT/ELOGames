@@ -2,6 +2,7 @@ import { Box, Text } from '@chakra-ui/react';
 import { css } from '@emotion/react';
 import { MaterialSymbol } from 'react-material-symbols';
 import { useLocation, useNavigate, useNavigation } from 'react-router-dom';
+import { logout } from '../../CRUD/user';
 
 interface LinkSidebarProps {
   iconName:
@@ -19,6 +20,11 @@ const LinkSidebar = ({ iconName, text, link }: LinkSidebarProps) => {
   const router = useLocation();
 
   const toggleClick = () => {
+    if (link === 'logout') {
+      logout();
+      navigate('/login');
+      return;
+    }
     navigate(`/admin/${link}`);
   };
   const isCurrentRoute = router.pathname === `/admin/${link}`;
